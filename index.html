@@ -3,37 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Español y Cultura | Social, Espiritual y Corporativa</title>
+    <title>Español y Cultura | C1 & C2</title>
+    <!-- Aqui entra o Tailwind CSS: o motor de design moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
 
-    <!-- Cabeçalho Principal -->
-    <header>
-        <h1>Proficiencia en Español y Cultura</h1>
-        <p>Traducción de la Cultura Social, Espiritual y Corporativa para la vida real y los negocios.</p>
+    <!-- Cabeçalho (Estilo corporativo/acadêmico) -->
+    <header class="bg-slate-900 text-white text-center py-20 px-4 shadow-md">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Maestría en Español y Cultura</h1>
+        <p class="text-xl md:text-2xl font-light max-w-3xl mx-auto text-slate-300">
+            Traducción de la Cultura Social, Espiritual y Corporativa para la vida real y los negocios.
+        </p>
     </header>
 
     <!-- Conteúdo Principal -->
-    <main>
+    <main class="max-w-5xl mx-auto px-4 py-16">
+        
         <!-- Seção de Metodologia -->
-        <section id="metodologia">
-            <h2>El Enfoque C1/C2</h2>
-            <p>Más allá de la gramática: dominar la mentalidad y los matices del idioma.</p>
+        <section id="metodologia" class="mb-20 text-center">
+            <h2 class="text-3xl font-semibold text-slate-800 mb-4 border-b-2 border-indigo-500 inline-block pb-2">El Enfoque C1/C2</h2>
+            <p class="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
+                No enseñamos reglas básicas. Desarrollamos la mentalidad, los matices y el comportamiento comunicativo exigido en los más altos niveles corporativos y sociales.
+            </p>
         </section>
 
-        <!-- Seção de Aulas em Vídeo (Placeholder para a Fase 1) -->
-        <section id="clases">
-            <h2>Clases y Análisis</h2>
-            <p>Aquí incrustaremos los videos desde YouTube o Vimeo para no sobrecargar el servidor.</p>
-            <!-- Exemplo de onde o vídeo entrará futuramente:
-            <iframe width="560" height="315" src="URL_DO_SEU_VIDEO"></iframe> 
-            -->
+        <!-- Seção de Aulas (Onde entra o seu material) -->
+        <section id="clases" class="bg-white rounded-xl shadow-lg p-6 md:p-10 border border-gray-100">
+            <div class="mb-8">
+                <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Clase Abierta</span>
+                <h2 class="text-2xl font-bold text-gray-900 mt-4">Análisis de Discurso Corporativo</h2>
+                <p class="text-gray-500 mt-2">Observa la integración de vocabulario avanzado en un entorno de negocios.</p>
+            </div>
+            
+            <!-- Container do Vídeo (Responsivo) -->
+            <div class="relative w-full overflow-hidden rounded-lg shadow-inner" style="padding-top: 56.25%;">
+                <!-- Este iframe puxa o vídeo direto dos servidores do YouTube -->
+                <iframe class="absolute top-0 left-0 w-full h-full" 
+                    src="https://www.youtube.com/embed/LXb3EKWsInQ" 
+                    title="Clase de Español" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
         </section>
+
     </main>
 
     <!-- Rodapé -->
-    <footer>
-        <p>&copy; 2026 - Plataforma Educativa</p>
+    <footer class="bg-slate-900 text-slate-400 text-center py-8 text-sm mt-12">
+        <p>&copy; 2026 - Plataforma Educativa de Alto Rendimiento</p>
     </footer>
 
 </body>
