@@ -1,157 +1,1272 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Español y Cultura | C1 & C2</title>
-    <!-- Aqui entra o Tailwind CSS: o motor de design moderno -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catiane Matiello | Psicóloga em Curitiba – Batel</title>
+  <meta name="description" content="Psicóloga Catiane Matiello – atendimento presencial no Batel, Curitiba, e online. CRP ativo. Agende sua consulta." />
+  <meta name="geo.region" content="BR-PR" />
+  <meta name="geo.placename" content="Curitiba" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalBusiness",
+    "name": "Catiane Matiello Psicóloga",
+    "description": "Atendimento psicológico individual presencial e online",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rua Buenos Aires, 466 – Main Offices, Sala 112",
+      "addressLocality": "Curitiba",
+      "addressRegion": "PR",
+      "addressCountry": "BR"
+    },
+    "telephone": "+55-19-99948-1965",
+    "url": "https://catianematiello.com.br"
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage:    #4A5E52;
+      --sage-lt: #6B8275;
+      --sand:    #F0EBE1;
+      --copper:  #B8915A;
+      --white:   #FAFAF8;
+      --ink:     #2C2C2C;
+      --ink-lt:  #5A5A5A;
+      --border:  #D8D2C8;
+
+      --display: 'Cormorant Garamond', Georgia, serif;
+      --body:    'Inter', system-ui, sans-serif;
+
+      --max: 1140px;
+      --pad: clamp(1.25rem, 5vw, 2.5rem);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--ink);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--display);
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--sage);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+    .nav-logo span { font-weight: 300; font-style: italic; }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--ink-lt);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--sage); }
+    .nav-cta {
+      background: var(--copper);
+      color: var(--white) !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 2px;
+      font-size: 0.8125rem !important;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: #a07d4a !important; color: var(--white) !important; }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 1px;
+      transition: all 0.3s;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem var(--pad);
+      z-index: 99;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      padding-top: 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(3rem, 8vw, 6rem) var(--pad) clamp(3rem, 8vw, 6rem) var(--pad);
+      position: relative;
+    }
+
+    /* Signature: fio condutor vertical */
+    .hero-content::before {
+      content: '';
+      position: absolute;
+      left: calc(var(--pad) - 1.5rem);
+      top: 15%;
+      bottom: 15%;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, var(--sage) 20%, var(--sage) 80%, transparent);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: var(--display);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 1.75rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--sage);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      line-height: 1.75;
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--sage);
+      color: var(--white);
+      padding: 0.875rem 1.75rem;
+      border-radius: 2px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: #3a4e42; transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--sage);
+      color: var(--sage);
+      padding: 0.875rem 1.75rem;
+      border-radius: 2px;
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: var(--sage); color: var(--white); }
+
+    .hero-meta {
+      display: flex;
+      gap: 2rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .hero-meta-item { }
+    .hero-meta-item strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 1.75rem;
+      font-weight: 400;
+      color: var(--sage);
+    }
+    .hero-meta-item span {
+      font-size: 0.75rem;
+      color: var(--ink-lt);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Hero image panel */
+    .hero-image {
+      background: var(--sand);
+      position: relative;
+      overflow: hidden;
+      min-height: 500px;
+    }
+    .hero-image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: var(--sage-lt);
+      padding: 2rem;
+    }
+    .placeholder-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px dashed var(--sage-lt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    .placeholder-text {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.6;
+      max-width: 200px;
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    /* ── SECTIONS BASE ── */
+    section { padding: clamp(4rem, 8vw, 7rem) var(--pad); }
+    .container { max-width: var(--max); margin: 0 auto; }
+
+    .section-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--sage); }
+    .section-lead {
+      font-size: 1.0625rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      line-height: 1.8;
+      max-width: 640px;
+    }
+
+    /* ── ÁREAS ── */
+    #areas { background: var(--sand); }
+
+    .areas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5px;
+      margin-top: 3rem;
+      background: var(--border);
+    }
+    .area-card {
+      background: var(--white);
+      padding: 2.25rem 2rem;
+      transition: background 0.2s;
+    }
+    .area-card:hover { background: var(--sage); }
+    .area-card:hover .area-title,
+    .area-card:hover .area-desc { color: var(--white); }
+    .area-icon {
+      width: 36px;
+      height: 2px;
+      background: var(--copper);
+      margin-bottom: 1.5rem;
+      transition: background 0.2s;
+    }
+    .area-card:hover .area-icon { background: rgba(255,255,255,0.5); }
+    .area-title {
+      font-family: var(--display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+      transition: color 0.2s;
+    }
+    .area-desc {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      line-height: 1.7;
+      transition: color 0.2s;
+    }
+
+    /* ── ABORDAGEM ── */
+    .abordagem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: center;
+      margin-top: 0;
+    }
+    .abordagem-text { }
+    .abordagem-text p {
+      font-size: 1.0625rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      line-height: 1.85;
+      margin-bottom: 1.25rem;
+    }
+    .abordagem-text p:last-child { margin-bottom: 0; }
+    .abordagem-image {
+      background: var(--sand);
+      aspect-ratio: 4/5;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+    .abordagem-image img { width: 100%; height: 100%; object-fit: cover; }
+    .abordagem-image .img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      color: var(--sage-lt);
+    }
+    .abordagem-image .img-placeholder .placeholder-text {
+      font-size: 0.75rem;
+    }
+
+    /* ── FORMAÇÃO ── */
+    #formacao { background: var(--ink); }
+    #formacao .section-title { color: var(--white); }
+    #formacao .section-eyebrow { color: var(--copper); }
+
+    .formacao-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5px;
+      margin-top: 3rem;
+      background: rgba(255,255,255,0.08);
+    }
+    .formacao-item {
+      background: var(--ink);
+      padding: 2.25rem 2rem;
+      border-left: 2px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .formacao-item:hover { border-left-color: var(--copper); }
+    .formacao-ano {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 0.5rem;
+    }
+    .formacao-titulo {
+      font-family: var(--display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .formacao-inst {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── SOBRE ── */
+    #sobre { background: var(--sand); }
+    .sobre-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: start;
+    }
+    .sobre-foto {
+      aspect-ratio: 3/4;
+      background: var(--white);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+    .sobre-foto img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .sobre-foto .img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      color: var(--sage-lt);
+    }
+    .sobre-content { padding-top: 1rem; }
+    .sobre-content .section-eyebrow { margin-bottom: 0.5rem; }
+    .sobre-content .section-title { margin-bottom: 1.5rem; }
+    .sobre-content p {
+      font-size: 1.0625rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      line-height: 1.85;
+      margin-bottom: 1.25rem;
+    }
+    .sobre-content p:last-of-type { margin-bottom: 2rem; }
+    .crp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--border);
+      padding: 0.625rem 1rem;
+      border-radius: 2px;
+      font-size: 0.8125rem;
+      color: var(--ink-lt);
+      letter-spacing: 0.04em;
+    }
+    .crp-badge span { color: var(--sage); font-weight: 500; }
+
+    /* ── PRIMEIROS PASSOS ── */
+    #primeiros-passos { }
+    .passos-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+      margin-top: 3rem;
+      align-items: start;
+    }
+    .passos-list { }
+    .passo {
+      display: flex;
+      gap: 1.5rem;
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .passo:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .passo-num {
+      font-family: var(--display);
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--border);
+      line-height: 1;
+      min-width: 2.5rem;
+      margin-top: -0.25rem;
+    }
+    .passo-body {}
+    .passo-title {
+      font-family: var(--display);
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .passo-desc {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      line-height: 1.75;
+    }
+    .passos-cta-box {
+      background: var(--sage);
+      padding: 2.5rem;
+      border-radius: 2px;
+      color: var(--white);
+    }
+    .passos-cta-box h3 {
+      font-family: var(--display);
+      font-size: 1.75rem;
+      font-weight: 300;
+      line-height: 1.3;
+      margin-bottom: 1rem;
+    }
+    .passos-cta-box h3 em { font-style: italic; }
+    .passos-cta-box p {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 2rem;
+    }
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #25D366;
+      color: var(--white);
+      padding: 0.875rem 1.75rem;
+      border-radius: 2px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: background 0.2s;
+    }
+    .btn-whatsapp:hover { background: #1ebe5d; }
+    .modalidades {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .modalidade-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.375rem 0.875rem;
+      border-radius: 2px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── ESPAÇO ── */
+    #espaco { background: var(--sand); }
+    .espaco-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5px;
+      margin-top: 3rem;
+      background: var(--border);
+    }
+    .espaco-foto {
+      background: var(--white);
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      position: relative;
+    }
+    .espaco-foto img { width: 100%; height: 100%; object-fit: cover; }
+    .espaco-foto .img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--sage-lt);
+    }
+    .espaco-info {
+      background: var(--white);
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .espaco-info h3 {
+      font-family: var(--display);
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .espaco-info h3 em { font-style: italic; color: var(--sage); }
+    .espaco-detail {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+    .espaco-detail-icon {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      color: var(--copper);
+      flex-shrink: 0;
+    }
+    .espaco-detail-text {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      line-height: 1.6;
+    }
+    .espaco-detail-text strong { color: var(--ink); font-weight: 500; }
+    .espaco-map-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--sage);
+      font-size: 0.875rem;
+      text-decoration: none;
+      border-bottom: 1px solid var(--sage);
+      padding-bottom: 1px;
+      margin-top: 1rem;
+      transition: opacity 0.2s;
+    }
+    .espaco-map-link:hover { opacity: 0.7; }
+
+    /* ── CONTATO ── */
+    #contato { }
+    .contato-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+      margin-top: 3rem;
+    }
+    .contato-info {}
+    .contato-info p {
+      font-size: 1.0625rem;
+      font-weight: 300;
+      color: var(--ink-lt);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+    .contato-item {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .contato-item:first-of-type { border-top: 1px solid var(--border); }
+    .contato-item-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--copper);
+      min-width: 100px;
+    }
+    .contato-item-value {
+      font-size: 0.9375rem;
+      color: var(--ink);
+    }
+    .contato-form-box {
+      background: var(--sand);
+      padding: 2.5rem;
+      border-radius: 2px;
+    }
+    .contato-form-box h3 {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--ink-lt);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-family: var(--body);
+      font-size: 0.9375rem;
+      font-weight: 300;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--sage); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-note {
+      font-size: 0.8rem;
+      color: var(--ink-lt);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 3rem var(--pad);
+    }
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .footer-brand {
+      font-family: var(--display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .footer-brand-sub {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.4);
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-legal {
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+    .footer-etica {
+      font-size: 0.8rem;
+      max-width: 400px;
+      line-height: 1.6;
+      text-align: right;
+    }
+
+    /* ── FLOATING WA ── */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 1.75rem;
+      right: 1.75rem;
+      z-index: 200;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .whatsapp-float:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 24px rgba(37,211,102,0.5);
+    }
+    .whatsapp-float svg { width: 28px; height: 28px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-image { min-height: 300px; order: -1; }
+      .hero-content::before { display: none; }
+      .abordagem-grid { grid-template-columns: 1fr; }
+      .abordagem-image { aspect-ratio: 16/9; }
+      .formacao-grid { grid-template-columns: 1fr; }
+      .sobre-grid { grid-template-columns: 1fr; }
+      .sobre-foto { aspect-ratio: 1/1; max-width: 320px; }
+      .passos-wrapper { grid-template-columns: 1fr; }
+      .espaco-grid { grid-template-columns: 1fr; }
+      .contato-grid { grid-template-columns: 1fr; }
+      .footer-top { flex-direction: column; }
+      .footer-etica { text-align: left; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-meta { gap: 1.25rem; }
+      .modalidades { flex-direction: column; gap: 0.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+<body>
 
-    <!-- Cabeçalho (Estilo corporativo/acadêmico) -->
-    <header class="bg-slate-900 text-white text-center py-20 px-4 shadow-md">
-        <h1 class="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Maestría en Español y Cultura</h1>
-        <p class="text-xl md:text-2xl font-light max-w-3xl mx-auto text-slate-300">
-            Traducción de la Cultura Social, Espiritual y Corporativa para la vida real y los negocios.
-        </p>
-    </header>
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Catiane Matiello <span>Psicóloga</span></a>
+    <ul class="nav-links">
+      <li><a href="#areas">Áreas</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#espaco">Espaço</a></li>
+      <li><a href="#contato">Contato</a></li>
+      <li>
+        <a href="https://wa.me/5519999481965?text=Olá,%20Catiane!%20Gostaria%20de%20agendar%20uma%20consulta." class="nav-cta" target="_blank" rel="noopener">Agendar</a>
+      </li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
 
-    <!-- Conteúdo Principal -->
-    <main class="max-w-5xl mx-auto px-4 py-16">
-        
-        <!-- Seção de Metodologia -->
-        <section id="metodologia" class="mb-20 text-center">
-            <h2 class="text-3xl font-semibold text-slate-800 mb-4 border-b-2 border-indigo-500 inline-block pb-2">El Enfoque C1/C2</h2>
-            <p class="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
-                No enseñamos reglas básicas. Desarrollamos la mentalidad, los matices y el comportamiento comunicativo exigido en los más altos niveles corporativos y sociales.
-            </p>
-        </section>
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#areas" onclick="closeMenu()">Áreas de Atuação</a>
+  <a href="#sobre" onclick="closeMenu()">Sobre Catiane</a>
+  <a href="#espaco" onclick="closeMenu()">O Espaço</a>
+  <a href="#contato" onclick="closeMenu()">Contato</a>
+  <a href="https://wa.me/5519999481965?text=Olá,%20Catiane!%20Gostaria%20de%20agendar%20uma%20consulta." style="color: #25D366; border-bottom: none;" target="_blank" rel="noopener">📲 Agendar pelo WhatsApp</a>
+</div>
 
-        <!-- Seção de Aulas (Onde entra o seu material) -->
-        <section id="clases" class="bg-white rounded-xl shadow-lg p-6 md:p-10 border border-gray-100">
-            <div class="mb-8">
-                <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full">Clase Abierta</span>
-                <h2 class="text-2xl font-bold text-gray-900 mt-4">Análisis de Discurso Corporativo</h2>
-                <p class="text-gray-500 mt-2">Observa la integración de vocabulario avanzado en un entorno de negocios.</p>
-            </div>
-            
-            <!-- Container do Vídeo (Responsivo) -->
-            <div class="relative w-full overflow-hidden rounded-lg shadow-inner" style="padding-top: 56.25%;">
-                <!-- Este iframe puxa o vídeo direto dos servidores do YouTube -->
-                <iframe class="absolute top-0 left-0 w-full h-full" 
-                    src="https://www.youtube.com/embed/LXb3EKWsInQ" 
-                    title="Clase de Español" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            </div>
-        </section>
+<!-- HERO -->
+<section style="padding:0; max-width:100%; margin:0;">
+  <div class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Psicóloga Clínica · CRP Ativo · Curitiba</p>
+      <h1 class="hero-title">
+        Um espaço para <em>se encontrar</em>
+      </h1>
+      <p class="hero-sub">
+        Atendimento psicológico individual com escuta acolhedora, rigor clínico e espaço seguro para o seu processo. Presencial no Batel ou online, no seu tempo.
+      </p>
+      <div class="hero-actions">
+        <a href="https://wa.me/5519999481965?text=Olá,%20Catiane!%20Gostaria%20de%20agendar%20uma%20consulta." class="btn-primary" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.122 1.528 5.855L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.652-.488-5.19-1.344l-.372-.221-3.862 1.007 1.033-3.772-.241-.389A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Agendar consulta
+        </a>
+        <a href="#sobre" class="btn-secondary">Conhecer a Catiane</a>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <strong>Presencial</strong>
+          <span>Batel · Curitiba</span>
+        </div>
+        <div class="hero-meta-item">
+          <strong>Online</strong>
+          <span>Todo o Brasil</span>
+        </div>
+        <div class="hero-meta-item">
+          <strong>Individual</strong>
+          <span>Adultos</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="hero-image-placeholder">
+        <div class="placeholder-icon">📷</div>
+        <p class="placeholder-text">Foto da Catiane<br/>será inserida aqui</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- Fase 2: Módulo Interativo (Substituindo o PDF) -->
-        <section id="practica" class="bg-white rounded-xl shadow-lg p-6 md:p-10 border border-gray-100 mt-8">
-            <h3 class="text-2xl font-bold text-gray-900 mb-4 border-l-4 border-indigo-500 pl-3">Evaluación Práctica: Vocabulario Corporativo</h3>
-            <p class="text-gray-600 mb-6">Completa las frases con el término profesional adecuado.</p>
+<!-- ÁREAS DE ATUAÇÃO -->
+<section id="areas">
+  <div class="container">
+    <p class="section-eyebrow">O que posso oferecer</p>
+    <h2 class="section-title">Áreas de <em>atuação</em></h2>
+    <p class="section-lead">Cada processo terapêutico é único. Atuo com foco em demandas que atravessam a vida adulta e impactam o bem-estar emocional.</p>
+    <div class="areas-grid">
+      <div class="area-card">
+        <div class="area-icon"></div>
+        <h3 class="area-title">Ansiedade e Estresse</h3>
+        <p class="area-desc">Apoio no desenvolvimento de recursos internos para lidar com a pressão do dia a dia, crises de ansiedade e sobrecarga emocional.</p>
+      </div>
+      <div class="area-card">
+        <div class="area-icon"></div>
+        <h3 class="area-title">Depressão</h3>
+        <p class="area-desc">Acompanhamento cuidadoso em processos de tristeza profunda, falta de sentido e dificuldade de se conectar com a própria vida.</p>
+      </div>
+      <div class="area-card">
+        <div class="area-icon"></div>
+        <h3 class="area-title">Relacionamentos</h3>
+        <p class="area-desc">Trabalho com vínculos afetivos, padrões relacionais, dificuldades na família e nos relacionamentos amorosos.</p>
+      </div>
+      <div class="area-card">
+        <div class="area-icon"></div>
+        <h3 class="area-title">Autoconhecimento</h3>
+        <p class="area-desc">Espaço para quem busca se entender melhor, ampliar a consciência sobre si mesmo e construir uma relação mais saudável com a própria história.</p>
+      </div>
+      <div class="area-card">
+        <div class="area-icon"></div>
+        <h3 class="area-title">Transições de Vida</h3>
+        <p class="area-desc">Suporte em mudanças significativas: término de relacionamentos, lutos, transições de carreira e novos ciclos de vida.</p>
+      </div>
+      <div class="area-card">
+        <div class="area-icon"></div>
+        <h3 class="area-title">Questões Identitárias</h3>
+        <p class="area-desc">Acolhimento a processos de construção e afirmação de identidade, incluindo questões de gênero, sexualidade e pertencimento.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <form id="quiz-form" class="space-y-6">
-                <!-- Pregunta 1 -->
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <label class="block text-gray-800 font-medium text-lg">
-                        1. Durante la junta directiva, el CEO presentó el 
-                        <input type="text" id="q1" class="border-b-2 border-gray-400 focus:border-indigo-600 bg-transparent outline-none px-2 text-center w-32 text-indigo-700 font-bold transition-colors" placeholder="..."> 
-                        de resultados financieros.
-                    </label>
-                </div>
-                
-                <!-- Pregunta 2 -->
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <label class="block text-gray-800 font-medium text-lg">
-                        2. Antes de firmar la fusión de las empresas, nuestro equipo legal necesita 
-                        <input type="text" id="q2" class="border-b-2 border-gray-400 focus:border-indigo-600 bg-transparent outline-none px-2 text-center w-32 text-indigo-700 font-bold transition-colors" placeholder="..."> 
-                        los riesgos del contrato.
-                    </label>
-                </div>
+<!-- ABORDAGEM -->
+<section id="abordagem">
+  <div class="container">
+    <div class="abordagem-grid">
+      <div class="abordagem-text">
+        <p class="section-eyebrow">Como trabalho</p>
+        <h2 class="section-title">Uma abordagem <em>presente</em></h2>
+        <p>Meu trabalho é pautado pela escuta atenta e pela presença genuína. Acredito que o espaço terapêutico precisa ser, antes de qualquer coisa, seguro — um lugar onde você possa chegar como é, sem precisar se explicar ou se justificar.</p>
+        <p>Utilizo referenciais da Psicologia Humanista e Existencial, com olhar voltado para a singularidade de cada pessoa. Não trago fórmulas prontas: cada processo é construído junto, respeitando o ritmo e as necessidades de quem está na sala.</p>
+        <p>O objetivo não é "consertar" nada. É criar condições para que você amplie sua compreensão sobre si mesmo e sobre suas escolhas — e a partir daí, encontre caminhos que façam sentido para a sua vida.</p>
+      </div>
+      <div class="abordagem-image">
+        <div class="img-placeholder">
+          <div class="placeholder-icon">🪴</div>
+          <p class="placeholder-text">Foto da sala de atendimento</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <!-- Botão de Ação -->
-                <button type="button" onclick="evaluarRespuestas()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition duration-300 transform hover:-translate-y-1 w-full md:w-auto mt-4">
-                    Entregar y Corregir
-                </button>
-            </form>
+<!-- FORMAÇÃO -->
+<section id="formacao">
+  <div class="container">
+    <p class="section-eyebrow">Formação e especializações</p>
+    <h2 class="section-title">Trajetória <em>acadêmica</em></h2>
+    <div class="formacao-grid">
+      <div class="formacao-item">
+        <p class="formacao-ano">Graduação</p>
+        <h3 class="formacao-titulo">Bacharelado em Psicologia</h3>
+        <p class="formacao-inst">Insira a universidade aqui</p>
+      </div>
+      <div class="formacao-item">
+        <p class="formacao-ano">Especialização</p>
+        <h3 class="formacao-titulo">Insira a especialização aqui</h3>
+        <p class="formacao-inst">Insira a instituição aqui</p>
+      </div>
+      <div class="formacao-item">
+        <p class="formacao-ano">Formação Complementar</p>
+        <h3 class="formacao-titulo">Insira o curso aqui</h3>
+        <p class="formacao-inst">Insira a instituição aqui</p>
+      </div>
+      <div class="formacao-item">
+        <p class="formacao-ano">Atualização</p>
+        <h3 class="formacao-titulo">Insira a atualização aqui</h3>
+        <p class="formacao-inst">Insira o ano e a instituição</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <!-- Caixa Oculta onde a nota vai aparecer -->
-            <div id="resultado-box" class="hidden mt-8 p-5 rounded-lg font-bold text-lg text-center border"></div>
-        </section>
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="container">
+    <div class="sobre-grid">
+      <div class="sobre-foto">
+        <div class="img-placeholder">
+          <div class="placeholder-icon">👤</div>
+          <p class="placeholder-text">Foto da Catiane<br/>retrato</p>
+        </div>
+      </div>
+      <div class="sobre-content">
+        <p class="section-eyebrow">Quem sou</p>
+        <h2 class="section-title">Catiane <em>Matiello</em></h2>
+        <p>Sou psicóloga clínica com atuação em atendimento individual de adultos. Escolhi a psicologia pela convicção de que todo ser humano carrega em si recursos que, com o suporte certo, podem ser acessados e desenvolvidos.</p>
+        <p>Minha prática é atravessada pela curiosidade genuína sobre o outro — e pelo respeito profundo pela singularidade de cada história. Busco construir um espaço de trabalho onde a técnica e o cuidado caminham juntos.</p>
+        <p>Atendo presencialmente no Batel, em Curitiba, e online para todo o Brasil.</p>
+        <div class="crp-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          CRP: <span>Insira seu CRP aqui</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    </main>
+<!-- PRIMEIROS PASSOS -->
+<section id="primeiros-passos">
+  <div class="container">
+    <p class="section-eyebrow">Como começar</p>
+    <h2 class="section-title">Primeiros <em>passos</em></h2>
+    <div class="passos-wrapper">
+      <div class="passos-list">
+        <div class="passo">
+          <div class="passo-num">1</div>
+          <div class="passo-body">
+            <h3 class="passo-title">Entre em contato</h3>
+            <p class="passo-desc">Mande uma mensagem pelo WhatsApp. Sem formulários complicados — uma conversa breve já é suficiente para combinarmos os detalhes.</p>
+          </div>
+        </div>
+        <div class="passo">
+          <div class="passo-num">2</div>
+          <div class="passo-body">
+            <h3 class="passo-title">Sessão de apresentação</h3>
+            <p class="passo-desc">Nos encontramos — presencialmente ou online — para você conhecer minha forma de trabalhar e entendermos se faz sentido seguirmos juntos.</p>
+          </div>
+        </div>
+        <div class="passo">
+          <div class="passo-num">3</div>
+          <div class="passo-body">
+            <h3 class="passo-title">Construímos o processo</h3>
+            <p class="passo-desc">Definimos frequência, formato e objetivos. O ritmo é o seu. O espaço já está pronto para te receber.</p>
+          </div>
+        </div>
+      </div>
+      <div class="passos-cta-box">
+        <h3>Dê o primeiro passo. <em>Estou aqui.</em></h3>
+        <p>Pedir ajuda é, em si, um ato de coragem. Se você está lendo isto, já está pronto para começar.</p>
+        <a href="https://wa.me/5519999481965?text=Olá,%20Catiane!%20Gostaria%20de%20agendar%20uma%20consulta." class="btn-whatsapp" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.122 1.528 5.855L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.652-.488-5.19-1.344l-.372-.221-3.862 1.007 1.033-3.772-.241-.389A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Falar pelo WhatsApp
+        </a>
+        <div class="modalidades">
+          <div class="modalidade-badge">📍 Presencial · Batel</div>
+          <div class="modalidade-badge">💻 Online · Brasil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Rodapé -->
-    <footer class="bg-slate-900 text-slate-400 text-center py-8 text-sm mt-12">
-        <p>&copy; 2026 - Plataforma Educativa de Alto Rendimiento</p>
-    </footer>
+<!-- O ESPAÇO -->
+<section id="espaco">
+  <div class="container">
+    <p class="section-eyebrow">O consultório</p>
+    <h2 class="section-title">Um ambiente pensado <em>para você</em></h2>
+    <div class="espaco-grid">
+      <div class="espaco-foto">
+        <div class="img-placeholder">
+          <div class="placeholder-icon">🛋️</div>
+          <p class="placeholder-text">Foto da sala 1</p>
+        </div>
+      </div>
+      <div class="espaco-info">
+        <h3>Conforto e <em>privacidade</em></h3>
+        <div class="espaco-detail">
+          <svg class="espaco-detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <div class="espaco-detail-text">
+            <strong>Rua Buenos Aires, 466</strong><br/>
+            Main Offices – Batel, Sala 112<br/>
+            Curitiba · PR
+          </div>
+        </div>
+        <div class="espaco-detail">
+          <svg class="espaco-detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div class="espaco-detail-text">
+            Horários disponíveis a combinar.<br/>Atendimentos de segunda a sábado.
+          </div>
+        </div>
+        <div class="espaco-detail">
+          <svg class="espaco-detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          <div class="espaco-detail-text">
+            Sala climatizada, acesso ao elevador,<br/>estacionamento no entorno.
+          </div>
+        </div>
+        <a href="https://maps.google.com/?q=Rua+Buenos+Aires+466+Batel+Curitiba+PR" class="espaco-map-link" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          Ver no Google Maps
+        </a>
+      </div>
+      <div class="espaco-foto">
+        <div class="img-placeholder">
+          <div class="placeholder-icon">🪟</div>
+          <p class="placeholder-text">Foto da sala 2</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem, 6vw, 5rem);align-items:start;">
+      <div>
+        <p class="section-eyebrow">Fale comigo</p>
+        <h2 class="section-title">Vamos <em>conversar</em></h2>
+        <p style="font-size:1.0625rem;font-weight:300;color:var(--ink-lt);line-height:1.8;margin-bottom:2rem;">A primeira mensagem pode ser simples. Me conta um pouco sobre o que te trouxe até aqui — e eu te respondo com atenção.</p>
+        <div class="contato-item">
+          <span class="contato-item-label">WhatsApp</span>
+          <span class="contato-item-value">(19) 99948-1965</span>
+        </div>
+        <div class="contato-item">
+          <span class="contato-item-label">Endereço</span>
+          <span class="contato-item-value">Rua Buenos Aires, 466 · Sala 112 · Batel · Curitiba</span>
+        </div>
+        <div class="contato-item">
+          <span class="contato-item-label">Modalidades</span>
+          <span class="contato-item-value">Presencial e Online</span>
+        </div>
+        <div style="margin-top:2rem;">
+          <a href="https://wa.me/5519999481965?text=Olá,%20Catiane!%20Gostaria%20de%20agendar%20uma%20consulta." class="btn-primary" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.122 1.528 5.855L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.652-.488-5.19-1.344l-.372-.221-3.862 1.007 1.033-3.772-.241-.389A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Iniciar pelo WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="contato-form-box">
+        <h3>Prefere escrever antes?</h3>
+        <div class="form-group">
+          <label>Seu nome</label>
+          <input type="text" placeholder="Como posso te chamar?" />
+        </div>
+        <div class="form-group">
+          <label>WhatsApp ou e-mail</label>
+          <input type="text" placeholder="Para eu te retornar" />
+        </div>
+        <div class="form-group">
+          <label>Mensagem</label>
+          <textarea placeholder="Me conta um pouco sobre o que te motivou a buscar atendimento..."></textarea>
+        </div>
+        <p class="form-note">Ao enviar, você será redirecionada para o WhatsApp. Suas informações são tratadas com total sigilo, conforme o Código de Ética do CFP e a LGPD.</p>
+        <a href="https://wa.me/5519999481965?text=Olá,%20Catiane!%20Gostaria%20de%20agendar%20uma%20consulta." class="btn-primary" target="_blank" rel="noopener" style="width:100%;justify-content:center;">
+          Enviar pelo WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <p class="footer-brand">Catiane Matiello</p>
+        <p class="footer-brand-sub">Psicóloga Clínica · CRP: [insira aqui] · Curitiba, PR</p>
+      </div>
+      <div class="footer-links">
+        <a href="#politica-privacidade">Política de Privacidade</a>
+        <a href="#termos">Termos de Uso</a>
+        <a href="https://wa.me/5519999481965" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-legal">
+        © 2025 Catiane Matiello. Todos os direitos reservados.<br/>
+        Este site está em conformidade com a LGPD (Lei 13.709/2018).
+      </p>
+      <p class="footer-etica">
+        Este site tem caráter informativo e não substitui atendimento psicológico. A psicóloga segue as normas do Código de Ética Profissional do Psicólogo (CFP).
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/5519999481965?text=Olá,%20Catiane!%20Gostaria%20de%20agendar%20uma%20consulta." class="whatsapp-float" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.122 1.528 5.855L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.652-.488-5.19-1.344l-.372-.221-3.862 1.007 1.033-3.772-.241-.389A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+</a>
 
 <script>
-        function evaluarRespuestas() {
-            // 1. Captura as respostas e limpa espaços
-            const r1 = document.getElementById('q1').value.trim().toLowerCase();
-            const r2 = document.getElementById('q2').value.trim().toLowerCase();
-
-            // 2. Arrays de respostas aceitas (O Gabarito Escalável)
-            const corretasQ1 = ["informe", "reporte"];
-            const corretasQ2 = ["mitigar", "evaluar", "reducir"];
-
-            let nota = 0;
-            let feedback1 = "";
-            let feedback2 = "";
-
-            // 3. Processamento e Construção do Feedback Visual da Questão 1
-            if (corretasQ1.includes(r1)) {
-                nota += 50;
-                // Resposta certa: Mostra em verde
-                feedback1 = `1. <span class="text-green-600 font-bold">✓ ${r1 || '(vacío)'}</span>`;
-            } else {
-                // Resposta errada: Mostra em vermelho cortado + a versão correta em verde
-                feedback1 = `1. <span class="text-red-500 font-bold line-through">✗ ${r1 || '(vacío)'}</span> <span class="text-gray-500 ml-2 text-sm">➡ Correcto:</span> <span class="text-green-600 font-bold">${corretasQ1.join(" o ")}</span>`;
-            }
-
-            // 4. Processamento e Construção do Feedback Visual da Questão 2
-            if (corretasQ2.includes(r2)) {
-                nota += 50;
-                feedback2 = `2. <span class="text-green-600 font-bold">✓ ${r2 || '(vacío)'}</span>`;
-            } else {
-                feedback2 = `2. <span class="text-red-500 font-bold line-through">✗ ${r2 || '(vacío)'}</span> <span class="text-gray-500 ml-2 text-sm">➡ Correcto:</span> <span class="text-green-600 font-bold">${corretasQ2.join(" o ")}</span>`;
-            }
-
-            // 5. Manipulação do DOM (A Tela)
-            const box = document.getElementById('resultado-box');
-            box.classList.remove('hidden', 'bg-green-50', 'bg-red-50', 'bg-yellow-50', 'border-green-300', 'border-red-300', 'border-yellow-300');
-            
-            let corFundo = "";
-            let corBorda = "";
-            let mensagemGeral = "";
-
-            if (nota === 100) {
-                corFundo = "bg-green-50"; corBorda = "border-green-300";
-                mensagemGeral = `<p class="text-green-800 text-xl mb-4">¡Excelente! Puntuación perfecta: ${nota}%. Dominas el vocabulario corporativo. 📈</p>`;
-            } else if (nota === 50) {
-                corFundo = "bg-yellow-50"; corBorda = "border-yellow-300";
-                mensagemGeral = `<p class="text-yellow-800 text-xl mb-4">Buen intento. Puntuación: ${nota}%. Acertaste una, revisa las correcciones abajo. 🔄</p>`;
-            } else {
-                corFundo = "bg-red-50"; corBorda = "border-red-300";
-                mensagemGeral = `<p class="text-red-800 text-xl mb-4">Puntuación: ${nota}%. Necesitamos repasar este módulo estratégico. ⚠️</p>`;
-            }
-
-            box.classList.add('block', corFundo, corBorda);
-            
-            // Injeta o HTML completo (Mensagem + Análise detalhada)
-            box.innerHTML = `
-                ${mensagemGeral}
-                <div class="text-left mt-4 p-4 bg-white rounded border border-gray-200 text-base font-normal shadow-inner">
-                    <div class="mb-3">${feedback1}</div>
-                    <div>${feedback2}</div>
-                </div>
-            `;
-        }
-    </script>
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMenu() {
+    mobileMenu.classList.remove('open');
+  }
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+      mobileMenu.classList.remove('open');
+    }
+  });
+</script>
 </body>
 </html>
