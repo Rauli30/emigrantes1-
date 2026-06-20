@@ -49,6 +49,40 @@
             </div>
         </section>
 
+<!-- Fase 2: Módulo Interativo (Substituindo o PDF) -->
+        <section id="practica" class="bg-white rounded-xl shadow-lg p-6 md:p-10 border border-gray-100 mt-8">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4 border-l-4 border-indigo-500 pl-3">Evaluación Práctica: Vocabulario Corporativo</h3>
+            <p class="text-gray-600 mb-6">Completa las frases con el término profesional adecuado.</p>
+
+            <form id="quiz-form" class="space-y-6">
+                <!-- Pregunta 1 -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <label class="block text-gray-800 font-medium text-lg">
+                        1. Durante la junta directiva, el CEO presentó el 
+                        <input type="text" id="q1" class="border-b-2 border-gray-400 focus:border-indigo-600 bg-transparent outline-none px-2 text-center w-32 text-indigo-700 font-bold transition-colors" placeholder="..."> 
+                        de resultados financieros.
+                    </label>
+                </div>
+                
+                <!-- Pregunta 2 -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <label class="block text-gray-800 font-medium text-lg">
+                        2. Antes de firmar la fusión de las empresas, nuestro equipo legal necesita 
+                        <input type="text" id="q2" class="border-b-2 border-gray-400 focus:border-indigo-600 bg-transparent outline-none px-2 text-center w-32 text-indigo-700 font-bold transition-colors" placeholder="..."> 
+                        los riesgos del contrato.
+                    </label>
+                </div>
+
+                <!-- Botão de Ação -->
+                <button type="button" onclick="evaluarRespuestas()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition duration-300 transform hover:-translate-y-1 w-full md:w-auto mt-4">
+                    Entregar y Corregir
+                </button>
+            </form>
+
+            <!-- Caixa Oculta onde a nota vai aparecer -->
+            <div id="resultado-box" class="hidden mt-8 p-5 rounded-lg font-bold text-lg text-center border"></div>
+        </section>
+
     </main>
 
     <!-- Rodapé -->
@@ -56,5 +90,35 @@
         <p>&copy; 2026 - Plataforma Educativa de Alto Rendimiento</p>
     </footer>
 
+    <!-- O Motor Lógico (JavaScript) -->
+    <script>
+        function evaluarRespuestas() {
+            const r1 = document.getElementById('q1').value.trim().toLowerCase();
+            const r2 = document.getElementById('q2').value.trim().toLowerCase();
+
+            const gabarito1 = "informe";
+            const gabarito2 = "mitigar";
+
+            let nota = 0;
+
+            if (r1 === gabarito1 || r1 === "reporte") nota += 50;
+            if (r2 === gabarito2 || r2 === "evaluar" || r2 === "reducir") nota += 50;
+
+            const box = document.getElementById('resultado-box');
+            
+            box.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'border-green-300', 'bg-red-100', 'text-red-800', 'border-red-300', 'bg-yellow-100', 'text-yellow-800', 'border-yellow-300');
+
+            if (nota === 100) {
+                box.innerHTML = `¡Excelente! Puntuación perfecta: ${nota}%. Dominas el vocabulario corporativo. 📈`;
+                box.classList.add('block', 'bg-green-100', 'text-green-800', 'border-green-300');
+            } else if (nota === 50) {
+                box.innerHTML = `Buen intento. Puntuación: ${nota}%. Acertaste una, pero revisa los términos de la otra. 🔄`;
+                box.classList.add('block', 'bg-yellow-100', 'text-yellow-800', 'border-yellow-300');
+            } else {
+                box.innerHTML = `Puntuación: ${nota}%. Necesitamos repasar este módulo estratégico. ⚠️`;
+                box.classList.add('block', 'bg-red-100', 'text-red-800', 'border-red-300');
+            }
+        }
+    </script>
 </body>
 </html>
