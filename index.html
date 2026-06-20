@@ -90,66 +90,65 @@
         <p>&copy; 2026 - Plataforma Educativa de Alto Rendimiento</p>
     </footer>
 
-<!-- O Motor Lógico (JavaScript) -->
-    <script>
+<script>
         function evaluarRespuestas() {
+            // 1. Captura as respostas e limpa espaços
             const r1 = document.getElementById('q1').value.trim().toLowerCase();
             const r2 = document.getElementById('q2').value.trim().toLowerCase();
 
-            // Respostas aceitas
-            const corretas1 = ["informe", "reporte"];
-            const corretas2 = ["mitigar", "evaluar", "reducir"];
-
-            // Palavra principal (a mais correta) para mostrar ao aluno
-            const melhor1 = "informe / reporte";
-            const melhor2 = "mitigar";
+            // 2. Arrays de respostas aceitas (O Gabarito Escalável)
+            const corretasQ1 = ["informe", "reporte"];
+            const corretasQ2 = ["mitigar", "evaluar", "reducir"];
 
             let nota = 0;
-            let feedbackQ1 = "";
-            let feedbackQ2 = "";
+            let feedback1 = "";
+            let feedback2 = "";
 
-            // Verifica pergunta 1
-            if (corretas1.includes(r1)) {
+            // 3. Processamento e Construção do Feedback Visual da Questão 1
+            if (corretasQ1.includes(r1)) {
                 nota += 50;
-                feedbackQ1 = `Pregunta 1: "<span class="font-bold text-green-700 bg-green-100 px-1 rounded">${r1}</span>" ✅ ¡Correcto!`;
+                // Resposta certa: Mostra em verde
+                feedback1 = `1. <span class="text-green-600 font-bold">✓ ${r1 || '(vacío)'}</span>`;
             } else {
-                feedbackQ1 = `Pregunta 1: "<span class="font-bold text-red-700 bg-red-100 px-1 rounded">${r1 || "sin respuesta"}</span>" ❌ — La respuesta correcta era: <span class="font-bold text-green-700 bg-green-100 px-1 rounded">${melhor1}</span>`;
+                // Resposta errada: Mostra em vermelho cortado + a versão correta em verde
+                feedback1 = `1. <span class="text-red-500 font-bold line-through">✗ ${r1 || '(vacío)'}</span> <span class="text-gray-500 ml-2 text-sm">➡ Correcto:</span> <span class="text-green-600 font-bold">${corretasQ1.join(" o ")}</span>`;
             }
 
-            // Verifica pergunta 2
-            if (corretas2.includes(r2)) {
+            // 4. Processamento e Construção do Feedback Visual da Questão 2
+            if (corretasQ2.includes(r2)) {
                 nota += 50;
-                feedbackQ2 = `Pregunta 2: "<span class="font-bold text-green-700 bg-green-100 px-1 rounded">${r2}</span>" ✅ ¡Correcto!`;
+                feedback2 = `2. <span class="text-green-600 font-bold">✓ ${r2 || '(vacío)'}</span>`;
             } else {
-                feedbackQ2 = `Pregunta 2: "<span class="font-bold text-red-700 bg-red-100 px-1 rounded">${r2 || "sin respuesta"}</span>" ❌ — La respuesta correcta era: <span class="font-bold text-green-700 bg-green-100 px-1 rounded">${melhor2}</span>`;
+                feedback2 = `2. <span class="text-red-500 font-bold line-through">✗ ${r2 || '(vacío)'}</span> <span class="text-gray-500 ml-2 text-sm">➡ Correcto:</span> <span class="text-green-600 font-bold">${corretasQ2.join(" o ")}</span>`;
             }
 
-            // Monta a caixa de resultado
+            // 5. Manipulação do DOM (A Tela)
             const box = document.getElementById('resultado-box');
-            box.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'border-green-300', 'bg-red-100', 'text-red-800', 'border-red-300', 'bg-yellow-100', 'text-yellow-800', 'border-yellow-300');
-
-            let tituloCor = "";
-            let tituloMsg = "";
+            box.classList.remove('hidden', 'bg-green-50', 'bg-red-50', 'bg-yellow-50', 'border-green-300', 'border-red-300', 'border-yellow-300');
+            
+            let corFundo = "";
+            let corBorda = "";
+            let mensagemGeral = "";
 
             if (nota === 100) {
-                tituloCor = "text-green-700";
-                tituloMsg = `¡Excelente! Puntuación perfecta: ${nota}% 📈`;
-                box.classList.add('block', 'bg-green-50', 'border-green-300');
+                corFundo = "bg-green-50"; corBorda = "border-green-300";
+                mensagemGeral = `<p class="text-green-800 text-xl mb-4">¡Excelente! Puntuación perfecta: ${nota}%. Dominas el vocabulario corporativo. 📈</p>`;
             } else if (nota === 50) {
-                tituloCor = "text-yellow-700";
-                tituloMsg = `Buen intento. Puntuación: ${nota}% 🔄`;
-                box.classList.add('block', 'bg-yellow-50', 'border-yellow-300');
+                corFundo = "bg-yellow-50"; corBorda = "border-yellow-300";
+                mensagemGeral = `<p class="text-yellow-800 text-xl mb-4">Buen intento. Puntuación: ${nota}%. Acertaste una, revisa las correcciones abajo. 🔄</p>`;
             } else {
-                tituloCor = "text-red-700";
-                tituloMsg = `Puntuación: ${nota}%. Necesitamos repasar este módulo. ⚠️`;
-                box.classList.add('block', 'bg-red-50', 'border-red-300');
+                corFundo = "bg-red-50"; corBorda = "border-red-300";
+                mensagemGeral = `<p class="text-red-800 text-xl mb-4">Puntuación: ${nota}%. Necesitamos repasar este módulo estratégico. ⚠️</p>`;
             }
 
+            box.classList.add('block', corFundo, corBorda);
+            
+            // Injeta o HTML completo (Mensagem + Análise detalhada)
             box.innerHTML = `
-                <p class="text-xl font-bold mb-4 ${tituloCor}">${tituloMsg}</p>
-                <div class="text-left space-y-3 text-base font-medium text-gray-800">
-                    <p>${feedbackQ1}</p>
-                    <p>${feedbackQ2}</p>
+                ${mensagemGeral}
+                <div class="text-left mt-4 p-4 bg-white rounded border border-gray-200 text-base font-normal shadow-inner">
+                    <div class="mb-3">${feedback1}</div>
+                    <div>${feedback2}</div>
                 </div>
             `;
         }
