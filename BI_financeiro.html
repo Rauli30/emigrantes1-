@@ -70,60 +70,6 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--on-surface-de-emphasis);
         }
-
-        .tooltip-container {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            margin-left: 6px;
-        }
-        .tooltip-icon {
-            cursor: help;
-            color: var(--on-surface-de-emphasis);
-            font-size: 14px;
-            transition: color 0.2s ease;
-        }
-        .tooltip-icon:hover {
-            color: var(--primary);
-        }
-        .tooltip-text {
-            visibility: hidden;
-            opacity: 0;
-            width: 240px;
-            background-color: var(--on-surface-default);
-            color: var(--surface);
-            text-align: left;
-            border-radius: 8px;
-            padding: 10px 12px;
-            position: absolute;
-            z-index: 50;
-            bottom: 130%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 11px;
-            font-weight: 500;
-            line-height: 1.5;
-            letter-spacing: 0.2px;
-            text-transform: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            pointer-events: none;
-        }
-        .tooltip-text::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -6px;
-            border-width: 6px;
-            border-style: solid;
-            border-color: var(--on-surface-default) transparent transparent transparent;
-        }
-        .tooltip-container:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-            transform: translate(-50%, -5px);
-        }
     </style>
 </head>
 <body class="h-screen overflow-hidden flex flex-col">
@@ -168,13 +114,7 @@
             <!-- Importador Inteligente Multi-banco -->
             <div class="flex flex-col gap-3">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--on-surface-de-emphasis)] flex items-center">
-                        Importador Multibancos
-                        <div class="tooltip-container">
-                            <span class="material-icons tooltip-icon">help_outline</span>
-                            <span class="tooltip-text"><strong>Motor de IA:</strong> Cole os textos brutos das suas faturas ou extratos aqui. O algoritmo lê os dados, limpa ruídos, categoriza automaticamente e <strong>ignora transferências entre suas contas (mesmo CPF)</strong> para não duplicar os seus gastos reais.</span>
-                        </div>
-                    </h2>
+                    <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--on-surface-de-emphasis)]">Importador Multibancos</h2>
                     <span id="import-month-badge" class="text-[10px] text-[var(--primary)] font-semibold bg-[var(--primary-container)] px-2 py-0.5 rounded">Maio</span>
                 </div>
                 <p class="text-xs text-[var(--on-surface-de-emphasis)] leading-relaxed">
@@ -208,10 +148,6 @@
                 <h3 class="text-xs font-bold text-[var(--on-surface-default)] flex items-center gap-1">
                     <span class="material-icons text-sm text-[var(--warning)]">warning</span>
                     Diretriz Estratégica (PM)
-                    <div class="tooltip-container">
-                        <span class="material-icons tooltip-icon">help_outline</span>
-                        <span class="tooltip-text"><strong>Alvo Tático:</strong> Meta estabelecida para o ciclo atual. Funciona como um "freio de mão" visual para garantir que os gastos de rua não consumam o capital destinado à Renda Fixa.</span>
-                    </div>
                 </h3>
                 <p class="text-xs text-[var(--on-surface-de-emphasis)] leading-relaxed">
                     Manter o "Custo de Rua" sob rédea curta. O teto recomendado para gastos variáveis é de <strong>R$ 1.500,00</strong> para garantir a recomposição de caixa.
@@ -227,13 +163,7 @@
                 <!-- Card 1 -->
                 <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
                     <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)] flex items-center">
-                            Desembolso Real
-                            <div class="tooltip-container">
-                                <span class="material-icons tooltip-icon">help_outline</span>
-                                <span class="tooltip-text"><strong>O Saque Verdadeiro:</strong> Dinheiro que efetivamente saiu do seu ecossistema para pagar terceiros. O BI remove a "ilusão bancária", ocultando transferências para você mesmo.</span>
-                            </div>
-                        </span>
+                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Desembolso Real</span>
                         <span class="material-icons text-red-500">trending_down</span>
                     </div>
                     <div id="kpi-total-saidas" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 0,00</div>
@@ -243,13 +173,7 @@
                 <!-- Card 2 -->
                 <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
                     <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)] flex items-center">
-                            Estrutura Fixa + Faturas
-                            <div class="tooltip-container">
-                                <span class="material-icons tooltip-icon">help_outline</span>
-                                <span class="tooltip-text"><strong>Custo de Sobrevivência:</strong> Custos vitais (Aluguel, Sanepar) + pagamento de faturas de meses passados. É o mínimo de capital necessário para manter sua base operacional.</span>
-                            </div>
-                        </span>
+                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Estrutura Fixa + Faturas</span>
                         <span class="material-icons text-blue-500">lock</span>
                     </div>
                     <div id="kpi-custos-fixos" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 0,00</div>
@@ -259,13 +183,7 @@
                 <!-- Card 3 -->
                 <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
                     <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)] flex items-center">
-                            Consumo Variável
-                            <div class="tooltip-container">
-                                <span class="material-icons tooltip-icon">help_outline</span>
-                                <span class="tooltip-text"><strong>Custo de Rua:</strong> A soma do dia a dia (iFood, Bares, Uber, Supermercado). É exatamente neste indicador onde você tem o poder imediato de corte. Monitoramento contínuo!</span>
-                            </div>
-                        </span>
+                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Consumo Variável</span>
                         <span class="material-icons text-yellow-500">shopping_bag</span>
                     </div>
                     <div id="kpi-custos-variaveis" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 0,00</div>
@@ -275,13 +193,7 @@
                 <!-- Card 4 -->
                 <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
                     <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)] flex items-center">
-                            Eficiência do Período
-                            <div class="tooltip-container">
-                                <span class="material-icons tooltip-icon">help_outline</span>
-                                <span class="tooltip-text"><strong>Matemática da Saúde:</strong> (Custo Fixo ÷ Desembolso Real) × 100. Revela a proporção gasta em estrutura sólida versus gastos impulsivos. Meta de Ouro: Acima de 70%.</span>
-                            </div>
-                        </span>
+                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Eficiência do Período</span>
                         <span class="material-icons text-green-500">security</span>
                     </div>
                     <div id="kpi-eficiencia" class="text-2xl font-bold text-green-600">0.0%</div>
@@ -297,10 +209,6 @@
                         <h3 class="text-sm font-bold text-[var(--on-surface-default)] mb-4 flex items-center gap-2">
                             <span class="material-icons text-blue-500 text-sm">pie_chart</span>
                             Divisão de Gastos por Categorias (Consolidado)
-                            <div class="tooltip-container">
-                                <span class="material-icons tooltip-icon">help_outline</span>
-                                <span class="tooltip-text"><strong>Mapa de Calor:</strong> Mostra com precisão para quais áreas o seu capital líquido está escoando no mês, facilitando o diagnóstico de excessos em alimentação ou assinaturas.</span>
-                            </div>
                         </h3>
                         <div id="category-bars-container" class="flex flex-col gap-4">
                             <!-- Inserido dinamicamente pelo JS -->
@@ -313,10 +221,6 @@
                         <h3 class="text-sm font-bold text-[var(--on-surface-default)] mb-4 flex items-center gap-2">
                             <span class="material-icons text-indigo-500 text-sm">account_balance_wallet</span>
                             Saídas Reais por Banco
-                            <div class="tooltip-container">
-                                <span class="material-icons tooltip-icon">help_outline</span>
-                                <span class="tooltip-text"><strong>Auditoria de Liquidez:</strong> Evidencia o "peso" de cada instituição no seu fechamento mensal. Ajuda a equilibrar saldos para não entrar no cheque especial acidentalmente em uma conta.</span>
-                            </div>
                         </h3>
                         <div id="bank-breakdown-container" class="flex flex-col gap-4 py-2">
                             <!-- Será preenchido dinamicamente pelo JS -->
@@ -334,10 +238,6 @@
                     <h3 class="text-sm font-bold text-[var(--on-surface-default)] flex items-center gap-2">
                         <span class="material-icons text-blue-500 text-sm">list</span>
                         Extrato Consolidado Detalhado (Multibancos)
-                        <div class="tooltip-container">
-                            <span class="material-icons tooltip-icon">help_outline</span>
-                            <span class="tooltip-text"><strong>Livro-Razão Limpo:</strong> Reúne o histórico cronológico de todos os seus bancos em uma única tabela contínua, excluindo os lançamentos internos e o ruído da operação.</span>
-                        </div>
                     </h3>
                     <div class="flex items-center gap-2">
                         <span id="trans-count" class="text-xs text-[var(--on-surface-de-emphasis)] bg-[var(--surface-container-high)] px-3 py-1 rounded-full font-semibold">
