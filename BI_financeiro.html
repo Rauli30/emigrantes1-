@@ -11,10 +11,10 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
         .tooltip { position: relative; display: inline-block; cursor: help; }
-        .tooltip .tooltiptext { visibility: hidden; width: 300px; background-color: #1e293b; color: #fff; text-align: left; border-radius: 8px; padding: 15px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 11px; line-height: 1.5; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+        .tooltip .tooltiptext { visibility: hidden; width: 280px; background-color: #1e293b; color: #fff; text-align: left; border-radius: 8px; padding: 12px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 11px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
         .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
-        .delete-btn { color: #ef4444; opacity: 0.5; transition: opacity 0.2s; cursor: pointer; }
-        .delete-btn:hover { opacity: 1; }
+        .delete-btn { color: #ef4444; opacity: 0.5; transition: opacity 0.2s; cursor: pointer; padding: 4px; }
+        .delete-btn:hover { opacity: 1; background: #fee2e2; border-radius: 6px; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -23,7 +23,7 @@
         <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-3xl font-black text-slate-900 tracking-tight">BI Financeiro 360°</h1>
-                <p class="text-slate-500 font-medium">Gestão Universal • Raúl Rojas Méndez</p>
+                <p class="text-slate-500 font-medium">Gestão Vitalícia • Raúl Rojas Méndez</p>
             </div>
             <div class="flex gap-3 bg-white p-2 rounded-xl shadow-sm border">
                 <select id="select-mes" onchange="render()" class="p-2 rounded-lg font-bold text-slate-700 focus:outline-none"></select>
@@ -50,7 +50,7 @@
                         <button onclick="process('BTG')" class="bg-blue-900 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-blue-950 transition">BTG</button>
                         <button onclick="process('Inter')" class="bg-orange-500 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-orange-600 transition">Inter</button>
                     </div>
-                    <button onclick="clearData()" class="text-red-500 text-xs font-bold w-full text-center underline opacity-70 hover:opacity-100">Limpar dados do período</button>
+                    <button onclick="clearData()" class="text-red-500 text-xs font-bold w-full text-center underline opacity-70 hover:opacity-100">Limpar dados deste período</button>
                 </div>
             </aside>
 
@@ -74,9 +74,9 @@
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('bi_universal_v5')) || {};
+        let db = JSON.parse(localStorage.getItem('bi_universal_v6')) || {};
         
-        function getPeriod() { return `${document.getElementById('select-ano').value}-${document.getElementById('select-mes').value}`; }
+        function getPeriod() { return `${document.getElementById('select-mes').value}-${document.getElementById('select-ano').value}`; }
 
         function render() {
             const period = getPeriod();
@@ -91,10 +91,10 @@
             });
 
             const kpis = [
-                { id: 'total', title: 'Desembolso Real', val: total, help: "Soma de todas as saídas reais.", calc: "Σ (Débitos - Pix Próprios)", comm: "Indica o volume real de capital que saiu do ecossistema." },
-                { id: 'fixed', title: 'Estrutura Fixa', val: fixed, help: "Despesas de manutenção (Aluguel, contas, faturas passadas).", calc: "Σ (Moradia + Faturas)", comm: "Sua linha de base de sobrevivência." },
-                { id: 'variable', title: 'Consumo Variável', val: variable, help: "Lazer, conveniência, Uber, mercado, avulsos.", calc: "Desembolso Real - Estrutura Fixa", comm: "Margem de manobra. Teto: R$ 1.500." },
-                { id: 'eff', title: 'Eficiência', val: total > 0 ? (100 - (variable/total*100)).toFixed(1) + '%' : '0%', help: "Relação Fixa vs Variável.", calc: "100 - (Variável / Total) * 100", comm: "Meta: manter > 70%." }
+                { id: 'total', title: 'Desembolso Real', val: total, help: "Soma de todas as saídas reais confirmadas.", calc: "Σ (Saídas - Transferências Próprias)", comm: "Indica o volume real de capital que saiu do ecossistema." },
+                { id: 'fixed', title: 'Estrutura Fixa', val: fixed, help: "Despesas de manutenção (Aluguel, contas, faturas anteriores).", calc: "Σ (Moradia + Faturas)", comm: "Sua linha de base de sobrevivência." },
+                { id: 'variable', title: 'Consumo Variável', val: variable, help: "Lazer, conveniência, Uber, mercado, compras avulsas.", calc: "Desembolso Total - Fixa", comm: "Margem de manobra (Teto: R$ 1.500)." },
+                { id: 'eff', title: 'Eficiência', val: total > 0 ? (100 - (variable/total*100)).toFixed(1) + '%' : '0%', help: "Relação de quanto do seu custo é essencial (Fixo) vs. supérfluo (Variável).", calc: "100 - (Variável / Total) * 100", comm: "Meta: manter > 70% de eficiência." }
             ];
 
             document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
@@ -102,7 +102,7 @@
                     <div class="flex justify-between items-start mb-2">
                         <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">${k.title}</span>
                         <div class="tooltip"><span class="material-icons text-blue-500 text-lg cursor-help">help_outline</span>
-                            <span class="tooltiptext"><strong>O que é:</strong> ${k.help}<br><br><strong>Cálculo:</strong> ${k.calc}<br><br><strong>Comunicação:</strong> ${k.comm}</span>
+                            <span class="tooltiptext"><strong>O que é:</strong> ${k.help}<br><br><strong>Cálculo:</strong> ${k.calc}<br><br><strong>Mensagem:</strong> ${k.comm}</span>
                         </div>
                     </div>
                     <div class="text-xl font-black text-slate-900">${typeof k.val === 'number' ? 'R$ ' + k.val.toFixed(2) : k.val}</div>
@@ -126,7 +126,7 @@
             if(!db[period]) db[period] = { txs: [] };
             
             const lines = raw.split('\n');
-            const noise = ['total', 'vencimento', 'agencia', 'conta', 'resumo', 'pagamento', 'minimo', 'fatura', 'documento', 'cliente'];
+            const noise = ['total', 'vencimento', 'agencia', 'conta', 'resumo', 'pagamento', 'minimo', 'fatura', 'documento', 'cliente', 'data de', 'final de', 'crédito', 'disponível', 'não está', 'juros', 'iof', 'multa', 'limite', 'transferência', 'pix'];
 
             lines.forEach(line => {
                 const isNoise = noise.some(kw => line.toLowerCase().includes(kw));
@@ -134,7 +134,8 @@
 
                 const valMatch = line.match(/R\$\s?([\d.,]+)/) || line.match(/(-?\d+[\d.,]*)/);
                 if(valMatch) {
-                    const val = parseFloat(valMatch[0].replace('R$', '').replace('.', '').replace(',', '.'));
+                    const rawVal = valMatch[1] || valMatch[0];
+                    const val = parseFloat(rawVal.replace('.', '').replace(',', '.'));
                     if(!isNaN(val) && val > 0) {
                         let cat = "Consumo Variável";
                         if(line.match(/Aluguel|Sanepar|Vivo|Alves|Condominio|Copel/i)) cat = "Moradia";
@@ -143,7 +144,7 @@
                     }
                 }
             });
-            localStorage.setItem('bi_universal_v5', JSON.stringify(db));
+            localStorage.setItem('bi_universal_v6', JSON.stringify(db));
             document.getElementById('raw-input').value = '';
             document.getElementById('pdf-input').value = '';
             render();
@@ -152,7 +153,7 @@
         function deleteTx(index) {
             const period = getPeriod();
             db[period].txs.splice(index, 1);
-            localStorage.setItem('bi_universal_v5', JSON.stringify(db));
+            localStorage.setItem('bi_universal_v6', JSON.stringify(db));
             render();
         }
 
@@ -166,7 +167,7 @@
                 for(let i=1; i<=pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
                     const text = await page.getTextContent();
-                    fullText += text.items.map(item => item.str).join(" ");
+                    fullText += text.items.map(item => item.str).join("\n");
                 }
                 document.getElementById('raw-input').value = fullText;
             };
@@ -184,8 +185,9 @@
             a.value = now.getFullYear();
             render();
         }
-        function clearData() { if(confirm('Apagar tudo deste período?')) { db[getPeriod()] = { txs: [] }; localStorage.setItem('bi_universal_v5', JSON.stringify(db)); render(); } }
+        function clearData() { if(confirm('Apagar tudo deste período?')) { db[getPeriod()] = { txs: [] }; localStorage.setItem('bi_universal_v6', JSON.stringify(db)); render(); } }
         setup();
     </script>
 </body>
 </html>
+```eof
