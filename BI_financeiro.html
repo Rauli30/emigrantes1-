@@ -3,78 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BI Financeiro 360° • Vitalício</title>
+    <title>BI Financeiro 360° • Universal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
-        .tooltip { position: relative; display: inline-block; cursor: help; }
-        .tooltip .tooltiptext { visibility: hidden; width: 280px; background-color: #1e293b; color: #fff; text-align: left; border-radius: 8px; padding: 12px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 11px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .tooltip { position: relative; display: inline-flex; align-items: center; cursor: help; }
+        .tooltip .tooltiptext { visibility: hidden; width: 300px; background-color: #0f172a; color: #fff; text-align: left; border-radius: 12px; padding: 16px; position: absolute; z-index: 100; bottom: 150%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 12px; line-height: 1.6; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); }
         .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
-        .delete-btn { color: #ef4444; opacity: 0.5; transition: opacity 0.2s; cursor: pointer; padding: 4px; }
-        .delete-btn:hover { opacity: 1; background: #fee2e2; border-radius: 6px; }
+        .delete-btn { color: #f87171; transition: all 0.2s; cursor: pointer; }
+        .delete-btn:hover { color: #b91c1c; transform: scale(1.2); }
     </style>
 </head>
 <body class="p-4 md:p-8">
-
     <div class="max-w-7xl mx-auto">
-        <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <header class="mb-8 flex flex-col md:flex-row justify-between items-start gap-4">
             <div>
                 <h1 class="text-3xl font-black text-slate-900 tracking-tight">BI Financeiro 360°</h1>
-                <p class="text-slate-500 font-medium">Gestão Vitalícia • Raúl Rojas Méndez</p>
+                <p class="text-slate-500 font-medium italic">Gestão Multibancos & Controle de Caixa</p>
             </div>
-            <div class="flex gap-3 bg-white p-2 rounded-xl shadow-sm border">
-                <select id="select-mes" onchange="render()" class="p-2 rounded-lg font-bold text-slate-700 focus:outline-none"></select>
-                <select id="select-ano" onchange="render()" class="p-2 rounded-lg font-bold text-slate-700 focus:outline-none"></select>
+            <div class="flex gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-200">
+                <select id="select-mes" onchange="render()" class="p-2 rounded-lg font-bold text-slate-700"></select>
+                <select id="select-ano" onchange="render()" class="p-2 rounded-lg font-bold text-slate-700"></select>
             </div>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
             <aside class="lg:col-span-1 space-y-6">
                 <div class="bg-white p-6 rounded-3xl border shadow-lg border-slate-100">
-                    <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <span class="material-icons text-blue-600">psychology</span> Importador Inteligente
-                    </h2>
-                    <textarea id="raw-input" placeholder="Cole o extrato aqui..." class="w-full h-40 p-4 border rounded-2xl text-xs font-mono bg-slate-50 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
-                    
-                    <div class="mb-4">
-                        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Ou importar PDF:</label>
-                        <input type="file" id="pdf-input" accept="application/pdf" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    </div>
-
+                    <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">Importador Inteligente</h2>
+                    <textarea id="raw-input" placeholder="Cole o extrato aqui..." class="w-full h-32 p-4 border rounded-2xl text-xs font-mono bg-slate-50 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                    <input type="file" id="pdf-input" accept="application/pdf" class="w-full text-xs mb-4">
                     <div class="grid grid-cols-2 gap-2 mb-4">
-                        <button onclick="process('Itaú')" class="bg-orange-600 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-orange-700 transition">Itaú</button>
-                        <button onclick="process('Nubank')" class="bg-purple-700 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-purple-800 transition">Nubank</button>
-                        <button onclick="process('BTG')" class="bg-blue-900 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-blue-950 transition">BTG</button>
-                        <button onclick="process('Inter')" class="bg-orange-500 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-orange-600 transition">Inter</button>
+                        <button onclick="process('Itaú')" class="bg-orange-600 text-white p-2 rounded-xl text-xs font-bold">Itaú</button>
+                        <button onclick="process('Nubank')" class="bg-purple-700 text-white p-2 rounded-xl text-xs font-bold">Nubank</button>
+                        <button onclick="process('BTG')" class="bg-blue-900 text-white p-2 rounded-xl text-xs font-bold">BTG</button>
+                        <button onclick="process('Inter')" class="bg-orange-500 text-white p-2 rounded-xl text-xs font-bold">Inter</button>
                     </div>
-                    <button onclick="clearData()" class="text-red-500 text-xs font-bold w-full text-center underline opacity-70 hover:opacity-100">Limpar dados deste período</button>
+                    <button onclick="clearData()" class="text-red-500 text-xs font-bold w-full underline opacity-70">Limpar período atual</button>
                 </div>
             </aside>
 
             <main class="lg:col-span-3 space-y-6">
                 <div id="kpi-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4"></div>
                 <div class="bg-white p-6 rounded-3xl border shadow-sm">
-                    <h3 class="font-bold text-slate-900 mb-6 flex items-center gap-2">
-                        <span class="material-icons text-slate-400">list</span> Extrato Consolidado Detalhado
-                    </h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs text-slate-400 uppercase">
-                                <tr><th class="pb-4">Data</th><th class="pb-4">Descrição</th><th class="pb-4">Banco</th><th class="pb-4 text-right">Valor</th><th class="pb-4 text-center">Ação</th></tr>
-                            </thead>
-                            <tbody id="tx-body" class="divide-y divide-slate-100"></tbody>
-                        </table>
-                    </div>
+                    <table class="w-full text-sm">
+                        <thead class="text-slate-400 uppercase text-xs">
+                            <tr><th class="pb-4">Data</th><th class="pb-4">Descrição</th><th class="pb-4">Banco</th><th class="pb-4 text-right">Valor</th><th class="pb-4 text-center">Ação</th></tr>
+                        </thead>
+                        <tbody id="tx-body" class="divide-y divide-slate-100"></tbody>
+                    </table>
                 </div>
             </main>
         </div>
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('bi_universal_v6')) || {};
+        let db = JSON.parse(localStorage.getItem('bi_universal_v7')) || {};
         
         function getPeriod() { return `${document.getElementById('select-mes').value}-${document.getElementById('select-ano').value}`; }
 
@@ -82,40 +68,35 @@
             const period = getPeriod();
             if(!db[period]) db[period] = { txs: [] };
             const data = db[period];
-            
             let total = 0, fixed = 0, variable = 0;
-            data.txs.forEach(t => {
-                total += t.val;
-                if(t.cat === 'Moradia' || t.cat === 'Faturas') fixed += t.val;
-                else variable += t.val;
-            });
+            data.txs.forEach(t => { total += t.val; if(t.cat === 'Moradia' || t.cat === 'Faturas') fixed += t.val; else variable += t.val; });
 
             const kpis = [
-                { id: 'total', title: 'Desembolso Real', val: total, help: "Soma de todas as saídas reais confirmadas.", calc: "Σ (Saídas - Transferências Próprias)", comm: "Indica o volume real de capital que saiu do ecossistema." },
-                { id: 'fixed', title: 'Estrutura Fixa', val: fixed, help: "Despesas de manutenção (Aluguel, contas, faturas anteriores).", calc: "Σ (Moradia + Faturas)", comm: "Sua linha de base de sobrevivência." },
-                { id: 'variable', title: 'Consumo Variável', val: variable, help: "Lazer, conveniência, Uber, mercado, compras avulsas.", calc: "Desembolso Total - Fixa", comm: "Margem de manobra (Teto: R$ 1.500)." },
-                { id: 'eff', title: 'Eficiência', val: total > 0 ? (100 - (variable/total*100)).toFixed(1) + '%' : '0%', help: "Relação de quanto do seu custo é essencial (Fixo) vs. supérfluo (Variável).", calc: "100 - (Variável / Total) * 100", comm: "Meta: manter > 70% de eficiência." }
+                { title: 'Desembolso Real', val: total, help: "Soma de todas as saídas reais.", calc: "Soma de débitos excluindo ruídos.", comm: "O volume real de capital que deixou o seu ecossistema." },
+                { title: 'Estrutura Fixa', val: fixed, help: "Custo de sobrevivência: moradia, contas, faturas pagas.", calc: "Soma de categorias Fixas.", comm: "Sua linha de base de sobrevivência." },
+                { title: 'Consumo Variável', val: variable, help: "Gastos de lazer e avulsos.", calc: "Desembolso Real - Estrutura Fixa", comm: "Margem de controle (Teto: R$ 1.500)." },
+                { title: 'Eficiência', val: total > 0 ? (100 - (variable/total*100)).toFixed(1) + '%' : '0%', help: "Proporção do seu gasto que é essencial.", calc: "1 - (Variável/Total)", comm: "Quanto mais alto, melhor você controla o supérfluo." }
             ];
 
             document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
                 <div class="bg-white p-6 rounded-3xl border shadow-sm">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">${k.title}</span>
-                        <div class="tooltip"><span class="material-icons text-blue-500 text-lg cursor-help">help_outline</span>
-                            <span class="tooltiptext"><strong>O que é:</strong> ${k.help}<br><br><strong>Cálculo:</strong> ${k.calc}<br><br><strong>Mensagem:</strong> ${k.comm}</span>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-[10px] font-black text-slate-400 uppercase">${k.title}</span>
+                        <div class="tooltip"><span class="material-icons text-blue-500 text-sm">help_outline</span>
+                            <span class="tooltiptext"><strong>O que é:</strong> ${k.help}<br><br><strong>Cálculo:</strong> ${k.calc}<br><br><strong>Significado:</strong> ${k.comm}</span>
                         </div>
                     </div>
-                    <div class="text-xl font-black text-slate-900">${typeof k.val === 'number' ? 'R$ ' + k.val.toFixed(2) : k.val}</div>
+                    <div class="text-xl font-black text-slate-900">R$ ${typeof k.val === 'number' ? k.val.toFixed(2) : k.val}</div>
                 </div>
             `).join('');
 
             document.getElementById('tx-body').innerHTML = data.txs.map((t, i) => `
                 <tr>
-                    <td class="py-4 text-slate-500">${t.d}</td>
-                    <td class="py-4 font-bold text-slate-800">${t.desc}</td>
-                    <td class="py-4 text-xs font-semibold text-slate-400">${t.bank}</td>
-                    <td class="py-4 text-right font-black text-slate-900">R$ ${t.val.toFixed(2)}</td>
-                    <td class="py-4 text-center"><button onclick="deleteTx(${i})" class="delete-btn material-icons">delete</button></td>
+                    <td class="py-3 text-slate-500">${t.d}</td>
+                    <td class="py-3 font-bold text-slate-800">${t.desc}</td>
+                    <td class="py-3 text-xs font-semibold text-slate-400">${t.bank}</td>
+                    <td class="py-3 text-right font-black text-slate-900">R$ ${t.val.toFixed(2)}</td>
+                    <td class="py-3 text-center"><button onclick="deleteTx(${i})" class="delete-btn material-icons">delete</button></td>
                 </tr>
             `).join('');
         }
@@ -123,19 +104,14 @@
         function process(bank) {
             const raw = document.getElementById('raw-input').value;
             const period = getPeriod();
-            if(!db[period]) db[period] = { txs: [] };
-            
             const lines = raw.split('\n');
-            const noise = ['total', 'vencimento', 'agencia', 'conta', 'resumo', 'pagamento', 'minimo', 'fatura', 'documento', 'cliente', 'data de', 'final de', 'crédito', 'disponível', 'não está', 'juros', 'iof', 'multa', 'limite', 'transferência', 'pix'];
+            const noise = ['total', 'vencimento', 'agencia', 'conta', 'resumo', 'pagamento', 'minimo', 'fatura', 'documento', 'cliente', 'limite', 'disponível', 'juros', 'iof', 'multa', 'saldo'];
 
             lines.forEach(line => {
-                const isNoise = noise.some(kw => line.toLowerCase().includes(kw));
-                if(isNoise) return;
-
-                const valMatch = line.match(/R\$\s?([\d.,]+)/) || line.match(/(-?\d+[\d.,]*)/);
+                if(noise.some(kw => line.toLowerCase().includes(kw))) return;
+                const valMatch = line.match(/(?:R\$|)\s?([\d.,]+)$/);
                 if(valMatch) {
-                    const rawVal = valMatch[1] || valMatch[0];
-                    const val = parseFloat(rawVal.replace('.', '').replace(',', '.'));
+                    const val = parseFloat(valMatch[1].replace('.', '').replace(',', '.'));
                     if(!isNaN(val) && val > 0) {
                         let cat = "Consumo Variável";
                         if(line.match(/Aluguel|Sanepar|Vivo|Alves|Condominio|Copel/i)) cat = "Moradia";
@@ -144,22 +120,20 @@
                     }
                 }
             });
-            localStorage.setItem('bi_universal_v6', JSON.stringify(db));
+            localStorage.setItem('bi_universal_v7', JSON.stringify(db));
             document.getElementById('raw-input').value = '';
             document.getElementById('pdf-input').value = '';
             render();
         }
 
         function deleteTx(index) {
-            const period = getPeriod();
-            db[period].txs.splice(index, 1);
-            localStorage.setItem('bi_universal_v6', JSON.stringify(db));
+            db[getPeriod()].txs.splice(index, 1);
+            localStorage.setItem('bi_universal_v7', JSON.stringify(db));
             render();
         }
 
         document.getElementById('pdf-input').addEventListener('change', async (e) => {
             const file = e.target.files[0];
-            if(!file) return;
             const reader = new FileReader();
             reader.onload = async function() {
                 const pdf = await pdfjsLib.getDocument(new Uint8Array(this.result)).promise;
@@ -167,7 +141,7 @@
                 for(let i=1; i<=pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
                     const text = await page.getTextContent();
-                    fullText += text.items.map(item => item.str).join("\n");
+                    fullText += text.items.map(item => item.str).join("\n") + "\n";
                 }
                 document.getElementById('raw-input').value = fullText;
             };
@@ -177,17 +151,15 @@
         function setup() {
             const m = document.getElementById('select-mes');
             const a = document.getElementById('select-ano');
-            const months = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-            months.forEach((n,i)=>{ m.add(new Option(n, (i+1).toString().padStart(2,'0'))); });
+            ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'].forEach((n,i)=>{ m.add(new Option(n, (i+1).toString().padStart(2,'0'))); });
             for(let i=2025; i<=2030; i++) a.add(new Option(i, i));
             const now = new Date();
             m.value = (now.getMonth()+1).toString().padStart(2,'0');
             a.value = now.getFullYear();
             render();
         }
-        function clearData() { if(confirm('Apagar tudo deste período?')) { db[getPeriod()] = { txs: [] }; localStorage.setItem('bi_universal_v6', JSON.stringify(db)); render(); } }
+        function clearData() { if(confirm('Apagar tudo deste período?')) { db[getPeriod()] = { txs: [] }; localStorage.setItem('bi_universal_v7', JSON.stringify(db)); render(); } }
         setup();
     </script>
 </body>
 </html>
-```eof
