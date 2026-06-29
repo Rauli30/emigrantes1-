@@ -56,6 +56,7 @@
             color: var(--on-surface-default);
             font-family: 'Inter', sans-serif;
         }
+        /* Custom scrollbar behavior for extreme premium feel */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -67,14 +68,14 @@
             background: var(--surface-container-high);
             border-radius: 99px;
         }
-        ::-webkit-scrollbar-thumb:hover {
+        ::-webkit-scrollbar-thumb:hover {A
             background: var(--on-surface-de-emphasis);
         }
     </style>
 </head>
 <body class="h-screen overflow-hidden flex flex-col">
 
-    <!-- Sistema de Notificações Toast Personalizado -->
+    <!-- Sistema de Notificações Toast Personalizado (Substitui alerts do navegador) -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
 
     <header class="bg-[var(--surface)] border-b border-[var(--surface-container-high)] px-6 py-4 flex items-center justify-between z-10 shrink-0">
@@ -95,7 +96,7 @@
 
     <div class="flex-1 flex overflow-hidden">
         
-        <!-- Sidebar Esquerda -->
+        <!-- Sidebar Esquerda: Controles, Metas e Importador Multibanco -->
         <aside class="w-80 bg-[var(--surface)] border-r border-[var(--surface-container-high)] p-6 overflow-y-auto flex flex-col gap-6 shrink-0">
             <div>
                 <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--on-surface-de-emphasis)] mb-3">Selecione o Período</h2>
@@ -111,17 +112,18 @@
 
             <hr class="border-[var(--surface-container-high)]" />
 
-            <!-- Importador Inteligente Multi-banco -->
+            <!-- Importador Inteligente de Extratos Multi-banco -->
             <div class="flex flex-col gap-3">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--on-surface-de-emphasis)]">Importador Multibancos</h2>
                     <span id="import-month-badge" class="text-[10px] text-[var(--primary)] font-semibold bg-[var(--primary-container)] px-2 py-0.5 rounded">Maio</span>
                 </div>
                 <p class="text-xs text-[var(--on-surface-de-emphasis)] leading-relaxed">
-                    Cole as faturas ou o extrato bruto (mesmo em formato de tabela ou texto corrido) de seus bancos para processar o fluxo consolidado.
+                    Cole as linhas brutas dos extratos do seu banco e selecione a carteira correspondente para processar o fluxo consolidado.
                 </p>
-                <textarea id="raw-extrato-input" placeholder="Cole o extrato BTG, faturas Itaú, faturas ou extratos Nubank aqui..." class="w-full h-36 p-3 text-xs bg-[var(--surface-container)] border border-[var(--surface-container-high)] rounded-lg focus:outline-none focus:border-[var(--primary)] text-[var(--on-surface-default)] resize-none font-mono"></textarea>
+                <textarea id="raw-extrato-input" placeholder="Cole aqui o extrato para processamento..." class="w-full h-36 p-3 text-xs bg-[var(--surface-container)] border border-[var(--surface-container-high)] rounded-lg focus:outline-none focus:border-[var(--primary)] text-[var(--on-surface-default)] resize-none font-mono"></textarea>
                 
+                <!-- Grid de Processamento por Banco -->
                 <div class="grid grid-cols-2 gap-2">
                     <button onclick="processExtrato('itau')" class="bg-[#ec7000] hover:brightness-110 text-white py-2 px-2 rounded-lg text-xs font-medium flex items-center justify-center gap-1 transition-all">
                         <span class="material-icons text-sm">account_balance</span> Itaú
@@ -155,55 +157,55 @@
             </div>
         </aside>
 
-        <!-- Main Content Area -->
+        <!-- Main Content Area: Dashboard de Métricas -->
         <main class="flex-1 p-6 overflow-y-auto flex flex-col gap-6">
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 
-                <!-- Card 1 -->
+                <!-- Card 1: Total Saídas Real -->
                 <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
                     <div class="flex justify-between items-start mb-2">
                         <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Desembolso Real</span>
                         <span class="material-icons text-red-500">trending_down</span>
                     </div>
-                    <div id="kpi-total-saidas" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 0,00</div>
+                    <div id="kpi-total-saidas" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 5.986,43</div>
                     <div class="text-[10px] text-[var(--on-surface-de-emphasis)] mt-1">Excluindo transferências de mesma titularidade</div>
                 </div>
 
-                <!-- Card 2 -->
+                <!-- Card 2: Custos Fixos -->
                 <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
                     <div class="flex justify-between items-start mb-2">
                         <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Estrutura Fixa + Faturas</span>
                         <span class="material-icons text-blue-500">lock</span>
                     </div>
-                    <div id="kpi-custos-fixos" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 0,00</div>
+                    <div id="kpi-custos-fixos" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 4.354,25</div>
                     <div class="text-[10px] text-[var(--on-surface-de-emphasis)] mt-1">Aluguel, Condomínio, Contas e Cartões passados</div>
                 </div>
 
-                <!-- Card 3 -->
+                <!-- Card 3: Custos Variáveis -->
                 <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
                     <div class="flex justify-between items-start mb-2">
                         <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Consumo Variável</span>
                         <span class="material-icons text-yellow-500">shopping_bag</span>
                     </div>
-                    <div id="kpi-custos-variaveis" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 0,00</div>
+                    <div id="kpi-custos-variaveis" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 1.632,18</div>
                     <div class="text-[10px] text-[var(--on-surface-de-emphasis)] mt-1">Alimentação, Uber, Mercado e taxas avulsas</div>
                 </div>
 
-                <!-- Card 4 -->
+                <!-- Card 4: Taxa de Eficiência -->
                 <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
                     <div class="flex justify-between items-start mb-2">
                         <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Eficiência do Período</span>
                         <span class="material-icons text-green-500">security</span>
                     </div>
-                    <div id="kpi-eficiencia" class="text-2xl font-bold text-green-600">0.0%</div>
+                    <div id="kpi-eficiencia" class="text-2xl font-bold text-green-600">72,7%</div>
                     <div class="text-[10px] text-[var(--on-surface-de-emphasis)] mt-1">Proporção de gastos fixos vs consumo geral</div>
                 </div>
             </div>
 
-            <!-- Gráficos e Distribuição -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
+                <!-- Gráfico de Alocação de Categorias -->
                 <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm lg:col-span-2 flex flex-col justify-between">
                     <div>
                         <h3 class="text-sm font-bold text-[var(--on-surface-default)] mb-4 flex items-center gap-2">
@@ -216,6 +218,7 @@
                     </div>
                 </div>
 
+                <!-- Distribuição por Contas Bancárias (Apoiando Itaú, Nubank, BTG, Inter) -->
                 <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm flex flex-col justify-between">
                     <div>
                         <h3 class="text-sm font-bold text-[var(--on-surface-default)] mb-4 flex items-center gap-2">
@@ -232,7 +235,6 @@
                 </div>
             </div>
 
-            <!-- Tabela de Lançamentos -->
             <div class="bg-[var(--surface)] rounded-2xl border border-[var(--surface-container-high)] shadow-sm flex-1 flex flex-col min-h-[300px]">
                 <div class="px-6 py-4 border-b border-[var(--surface-container-high)] flex items-center justify-between">
                     <h3 class="text-sm font-bold text-[var(--on-surface-default)] flex items-center gap-2">
@@ -241,7 +243,7 @@
                     </h3>
                     <div class="flex items-center gap-2">
                         <span id="trans-count" class="text-xs text-[var(--on-surface-de-emphasis)] bg-[var(--surface-container-high)] px-3 py-1 rounded-full font-semibold">
-                            0 transações
+                            32 transações
                         </span>
                     </div>
                 </div>
@@ -269,8 +271,10 @@
     </div>
 
     <script>
+        // Banco de dados em memória para os meses com distribuição 4-bancos
         let currentMonth = 'maio';
 
+        // ConfiguraçõesVisuais de Cores e Nomes de Banco
         const bankConfig = {
             'Itaú': { color: '#ec7000', label: 'Itaú Unibanco', badgeClass: 'bg-orange-500/10 text-orange-500 border border-orange-500/20' },
             'Nubank': { color: '#820ad1', label: 'Nubank', badgeClass: 'bg-purple-500/10 text-purple-500 border border-purple-500/20' },
@@ -284,6 +288,7 @@
                 custosFixos: 4354.25,
                 custosVariaveis: 1632.18,
                 eficiencia: "72.7%",
+                // Maio com distribuição realista entre as quatro contas
                 itau: 3100.00,
                 nubank: 1444.28,
                 btg: 1000.00,
@@ -299,16 +304,20 @@
                     { label: "Mobilidade & Transporte", val: 93.93, color: "bg-pink-500", percentage: "2%" }
                 ],
                 transactions: [
+                    // Itaú
                     { date: "08/05/2026", desc: "Aluguel (Alves e Vargas)", cat: "Moradia & Estrutura Fixa", bank: "Itaú", method: "Boleto", val: 1954.94 },
                     { date: "04/05/2026", desc: "Fatura Paga Itaú Uniclass", cat: "Faturas de Cartões Passados", bank: "Itaú", method: "Débito", val: 668.50 },
                     { date: "05/05/2026", desc: "Condomínio (Lume)", cat: "Moradia & Estrutura Fixa", bank: "Itaú", method: "Boleto", val: 481.49 },
                     { date: "04/05/2026", desc: "Fatura Paga Pão de Açúcar", cat: "Faturas de Cartões Passados", bank: "Itaú", method: "Débito", val: 422.11 },
+                    // Nubank
                     { date: "07/05/2026", desc: "Fatura Cartão Nubank", cat: "Faturas de Cartões Passados", bank: "Nubank", method: "Débito", val: 366.46 },
                     { date: "01/05/2026", desc: "Condor Champagnat", cat: "Supermercado & Abastecimento", bank: "Nubank", method: "Débito", val: 144.30 }, 
                     { date: "10/05/2026", desc: "Condor Nilo Peçanha", cat: "Supermercado & Abastecimento", bank: "Nubank", method: "Débito", val: 128.11 },
                     { date: "01/05/2026", desc: "Vivo Telecomunicações", cat: "Moradia & Estrutura Fixa", bank: "Nubank", method: "Pix", val: 120.00 },
+                    // BTG Pactual (Aporte / Seguros / Serviços Prime)
                     { date: "05/05/2026", desc: "BTG Pactual Seguro Fixo", cat: "Moradia & Estrutura Fixa", bank: "BTG", method: "Boleto", val: 500.00 },
                     { date: "15/05/2026", desc: "BTG Corretora Custódia", cat: "Moradia & Estrutura Fixa", bank: "BTG", method: "Débito", val: 500.00 },
+                    // Banco Inter (Recorrentes, Consumo e Compras via Inter Shop)
                     { date: "05/05/2026", desc: "Vivo Telecomunicações", cat: "Moradia & Estrutura Fixa", bank: "Inter", method: "Débito Direto", val: 120.00 },
                     { date: "04/05/2026", desc: "Energia Copel", cat: "Moradia & Estrutura Fixa", bank: "Inter", method: "Pix QRS", val: 119.14 },
                     { date: "02/05/2026", desc: "Chori Getulio", cat: "Alimentação Fora & Bares", bank: "Nubank", method: "Débito", val: 96.00 },
@@ -349,6 +358,7 @@
             }
         };
 
+        // Sistema de Notificações Toast nativo (Substitui os alerts para preservar a estabilidade da UI)
         function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -375,10 +385,12 @@
             
             container.appendChild(toast);
             
+            // Trigger animation
             setTimeout(() => {
                 toast.classList.remove('translate-y-2', 'opacity-0');
             }, 10);
 
+            // Automelt down
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'translate-y-[-10px]');
                 setTimeout(() => toast.remove(), 300);
@@ -388,10 +400,12 @@
         function renderDashboard() {
             const data = db[currentMonth];
             
+            // Renderizando KPIs principais
             document.getElementById('kpi-total-saidas').textContent = formatCurrency(data.totalSaidas);
             document.getElementById('kpi-custos-fixos').textContent = formatCurrency(data.custosFixos);
             document.getElementById('kpi-custos-variaveis').textContent = formatCurrency(data.custosVariaveis);
             
+            // Renderizando taxa de eficiência baseada nos dados do banco de dados de forma uniforme
             document.getElementById('kpi-eficiencia').textContent = data.eficiencia || "0.0%";
             if (data.totalSaidas > 0) {
                 document.getElementById('kpi-eficiencia').className = "text-2xl font-bold text-green-600";
@@ -399,6 +413,7 @@
                 document.getElementById('kpi-eficiencia').className = "text-2xl font-bold text-[var(--on-surface-de-emphasis)]";
             }
 
+            // Renderizando a divisão por Bancos de forma dinâmica (Suporte a Itaú, Nubank, BTG, Inter)
             const bankBreakdownContainer = document.getElementById('bank-breakdown-container');
             bankBreakdownContainer.innerHTML = '';
 
@@ -421,6 +436,7 @@
                 bankBreakdownContainer.appendChild(item);
             });
 
+            // Categorias
             const catsContainer = document.getElementById('category-bars-container');
             catsContainer.innerHTML = '';
             if (data.categories.length === 0) {
@@ -446,6 +462,7 @@
                 });
             }
 
+            // Transações
             const tbody = document.getElementById('transactions-tbody');
             tbody.innerHTML = '';
             document.getElementById('trans-count').textContent = `${data.transactions.length} transações`;
@@ -469,6 +486,7 @@
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-[var(--surface-container)] transition-all";
                     
+                    // Stylized bank tags matching bank styles
                     const bTag = bankConfig[t.bank] ? 
                         `<span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: ${bankConfig[t.bank].color}15; color: ${bankConfig[t.bank].color}; border: 1px solid ${bankConfig[t.bank].color}30">${t.bank}</span>` : t.bank;
 
@@ -485,10 +503,12 @@
             }
         }
 
+        // Auxiliar de formatação financeira
         function formatCurrency(val) {
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
         }
 
+        // Alterar visualização de meses e adaptar a interface do importador lateral
         function switchMonth(month) {
             currentMonth = month;
             const btnMaio = document.getElementById('btn-tab-maio');
@@ -510,7 +530,6 @@
             renderDashboard();
         }
 
-        // HEURISTIC PARSER INTELIGENTE DE ALTA RESILIÊNCIA
         function processExtrato(origin) {
             const rawText = document.getElementById('raw-extrato-input').value;
             if (!rawText.trim()) {
@@ -521,140 +540,101 @@
             const lines = rawText.split('\n');
             const parsedTransactions = [];
             
-            let targetMonthNum = currentMonth === 'maio' ? "05" : "06";
-            let targetYear = "2026";
-            let fallbackDate = `28/${targetMonthNum}/${targetYear}`;
-            let currentLineDate = null;
+            // Define fallback date based on active month
+            let tempDate = currentMonth === 'maio' ? "28/05/2026" : "28/06/2026";
 
-            // Dicionário de meses de Extrato Corrido
-            const monthMap = {
-                "JAN": "01", "FEB": "02", "MAR": "03", "ABR": "04", "MAI": "05", "JUN": "06",
-                "JUL": "07", "AGO": "08", "SET": "09", "OUT": "10", "NOV": "11", "DEZ": "12"
-            };
+            // Regex simples para capturar datas no formato brasileiro
+            const dateRegex = /(\d{2})\/(\d{2})\/(\d{4})/; 
+            const shortDateRegex = /(\d{2})\s(JAN|FEB|MAR|ABR|MAI|JUN|JUL|AGO|SET|OUT|NOV|DEZ|MAI|AGO)/i; 
 
-            lines.forEach((line) => {
-                let text = line.trim();
-                if (!text) return;
-
-                // 1. Limpeza de ruídos de scan ou OCR
-                text = text.replace(/[\)\@\*]+/g, '').trim();
-
-                // 2. Extração de Data
-                let dateMatch = text.match(/(\d{2})\/(\d{2})\/(\d{4})/);
-                let shortDateSlashMatch = text.match(/(\d{2})\/(\d{2})/);
-                let shortDateTextMatch = text.match(/(\d{2})\s*(JAN|FEB|MAR|ABR|MAI|JUN|JUL|AGO|SET|OUT|NOV|DEZ)/i);
-
-                let dateFound = null;
-
+            lines.forEach(line => {
+                // Atualizar data de referência se encontrar uma no caminho
+                let dateMatch = line.match(dateRegex);
                 if (dateMatch) {
-                    if (dateMatch[2] === targetMonthNum) {
-                        dateFound = `${dateMatch[1]}/${dateMatch[2]}/${dateMatch[3]}`;
-                    }
-                } else if (shortDateSlashMatch) {
-                    if (shortDateSlashMatch[2] === targetMonthNum) {
-                        dateFound = `${shortDateSlashMatch[1]}/${shortDateSlashMatch[2]}/${targetYear}`;
-                    }
-                } else if (shortDateTextMatch) {
-                    let mNum = monthMap[shortDateTextMatch[2].toUpperCase()];
-                    if (mNum === targetMonthNum) {
-                        dateFound = `${shortDateTextMatch[1]}/${mNum}/${targetYear}`;
+                    tempDate = dateMatch[0];
+                } else {
+                    let shortMatch = line.match(shortDateRegex);
+                    if (shortMatch) {
+                        const day = shortMatch[1];
+                        const months = {
+                            "JAN": "01", "FEB": "02", "MAR": "03", "ABR": "04", "MAI": "05", "JUN": "06",
+                            "JUL": "07", "AGO": "08", "SET": "09", "OUT": "10", "NOV": "11", "DEZ": "12"
+                        };
+                        const monthStr = months[shortMatch[2].toUpperCase()] || (currentMonth === 'maio' ? "05" : "06");
+                        tempDate = `${day}/${monthStr}/2026`;
                     }
                 }
 
-                if (dateFound) {
-                    currentLineDate = dateFound;
-                }
+                // Extraindo valores numéricos de transações negativas (saídas) ou positivas
+                const valueRegex = /(-\s*\d+[\.,]\d{2}|\d+[\.,]\d{2})/g;
+                let valueMatch = line.match(valueRegex);
 
-                // 3. Detecção e limpeza de valores financeiros
-                let cleanedTextForValue = text.replace(/R\$\s*/gi, '').replace(/\$\s*/g, '').trim();
-                let valueRegex = /(-\s*\d+[\.,]\d{2}|\d+[\.,]\d{2})/g;
-                let valueMatches = cleanedTextForValue.match(valueRegex);
+                if (valueMatch && valueMatch.length > 0) {
+                    // Limpar texto de descrição
+                    let desc = line
+                        .replace(dateRegex, '')
+                        .replace(shortDateRegex, '')
+                        .replace(valueRegex, '')
+                        .replace(/Total de saídas|Total de entradas|Compra no débito|PIX QRS|PIX TRANSF/gi, '')
+                        .trim();
 
-                if (valueMatches && valueMatches.length > 0) {
-                    let rawVal = valueMatches[valueMatches.length - 1];
-                    let val = parseFloat(rawVal.replace(/\s/g, '').replace(/[^0-9,-]/g, '').replace(',', '.'));
+                    let rawVal = valueMatch[valueMatch.length - 1];
+                    let val = parseFloat(rawVal.replace(/[^0-9,-]/g, '').replace(',', '.'));
 
-                    // Filtros de exclusão (saldo do dia, portabilidade, limites, etc.)
-                    if (text.toUpperCase().includes("SALDO DIÁRIO") || text.toUpperCase().includes("SALDO DO DIA") || text.toUpperCase().includes("PORTABILIDADE DE SALÁRIO") || text.toUpperCase().includes("SALÁRIO") || text.toUpperCase().includes("LIMITE DE CRÉDITO") || text.toUpperCase().includes("PAGAMENTO RECEBIDO")) {
-                        return;
-                    }
+                    // Consideramos apenas saídas para despesas (valores negativos ou descritos como saídas)
+                    if (val < 0 || line.includes('de saídas') || line.includes('Compra no débito') || line.includes('Fatura paga')) {
+                        val = Math.abs(val);
+                        
+                        // Ignoramos transferências para si mesmo por padrão para o cálculo de BI
+                        if (desc.toUpperCase().includes("RAUL ROJAS") || desc.toUpperCase().includes("RAÚL ROJAS")) {
+                            return; 
+                        }
 
-                    // Ignorar transferências de mesma titularidade
-                    if (text.toUpperCase().includes("RAUL ROJAS") || text.toUpperCase().includes("RAÚL ROJAS")) {
-                        if (!text.toUpperCase().includes("WELLHUB")) {
-                            return; // Ignora auto-transferência
+                        // Categorização Inteligente Automatizada baseada em palavras-chave
+                        let cat = "Consumo Variável";
+                        if (desc.toUpperCase().includes("CONDOR") || desc.toUpperCase().includes("MUFFATO") || desc.toUpperCase().includes("FESTVAL")) {
+                            cat = "Supermercado & Abastecimento";
+                        } else if (desc.toUpperCase().includes("ALVES E VARGAS") || desc.toUpperCase().includes("LUME") || desc.toUpperCase().includes("SANEPAR") || desc.toUpperCase().includes("COPEL") || desc.toUpperCase().includes("VIVO")) {
+                            cat = "Moradia & Estrutura Fixa";
+                        } else if (desc.toUpperCase().includes("FATURA PAGA") || desc.toUpperCase().includes("UNICLAS") || desc.toUpperCase().includes("PAO DE ACUCA") || desc.toUpperCase().includes("NUBANK")) {
+                            cat = "Faturas de Cartões Passados";
+                        } else if (desc.toUpperCase().includes("CHORI") || desc.toUpperCase().includes("LAPAULA") || desc.toUpperCase().includes("SALTO ANGEL") || desc.toUpperCase().includes("REFEICOES") || desc.toUpperCase().includes("ZAMBRANO") || desc.toUpperCase().includes("BATEL") || desc.toUpperCase().includes("ADEGA") || desc.toUpperCase().includes("DELICATTO")) {
+                            cat = "Alimentação Fora & Bares";
+                        } else if (desc.toUpperCase().includes("MERCADO PAG") || desc.toUpperCase().includes("PAGAR ME") || desc.toUpperCase().includes("SPOTIFY") || desc.toUpperCase().includes("SEGURO")) {
+                            cat = "Assinaturas & Serviços Digitais";
+                        } else if (desc.toUpperCase().includes("UBER") || desc.toUpperCase().includes("TRANSP COLET")) {
+                            cat = "Mobilidade & Transporte";
+                        } else if (desc.toUpperCase().includes("POLICIA FED")) {
+                            cat = "Taxas & Burocracias";
+                        } else if (desc.toUpperCase().includes("ADONIS") || desc.toUpperCase().includes("FOLIA") || desc.toUpperCase().includes("ROSILDO") || desc.toUpperCase().includes("MARCELO") || desc.toUpperCase().includes("GENIALGRAPH")) {
+                            cat = "Repasses a Terceiros";
+                        }
+
+                        let bankLabel = "Itaú";
+                        if (origin === 'nubank') bankLabel = "Nubank";
+                        else if (origin === 'btg') bankLabel = "BTG";
+                        else if (origin === 'inter') bankLabel = "Inter";
+
+                        if (desc.length > 3) {
+                            parsedTransactions.push({
+                                date: tempDate,
+                                desc: desc.substring(0, 30),
+                                cat: cat,
+                                bank: bankLabel,
+                                method: line.includes('Pix') ? 'Pix' : 'Débito',
+                                val: val
+                            });
                         }
                     }
-
-                    // Se encontrou valor e temos uma data válida para o mês alvo
-                    let txDate = currentLineDate || fallbackDate;
-                    if (txDate.split('/')[1] !== targetMonthNum) {
-                        return; // Pula transações fora do mês selecionado
-                    }
-
-                    // Extrair descrição removendo datas e valores
-                    let desc = text;
-                    if (dateMatch) desc = desc.replace(dateMatch[0], '');
-                    if (shortDateSlashMatch) desc = desc.replace(shortDateSlashMatch[0], '');
-                    if (shortDateTextMatch) desc = desc.replace(shortDateTextMatch[0], '');
-                    desc = desc.replace(/R\$\s*/gi, '').replace(/\$\s*/g, '').replace(rawVal, '').replace(/[\/\|\s\-]+/g, ' ').trim();
-
-                    // Se a descrição sobrou muito vazia, pula
-                    if (desc.length < 3) return;
-
-                    // Classificação heurística refinada por palavras-chave reais das faturas
-                    let cat = "Consumo Variável";
-                    let descUpper = desc.toUpperCase();
-
-                    if (descUpper.includes("CONDOR") || descUpper.includes("MUFFATO") || descUpper.includes("FESTVAL") || descUpper.includes("BEAL")) {
-                        cat = "Supermercado & Abastecimento";
-                    } else if (descUpper.includes("ALVES") || descUpper.includes("LUME") || descUpper.includes("SANEPAR") || descUpper.includes("COPEL") || descUpper.includes("TELEFONICA") || descUpper.includes("VIVO") || descUpper.includes("CASA CHINA")) {
-                        cat = "Moradia & Estrutura Fixa";
-                    } else if (descUpper.includes("FATURA PAGA") || descUpper.includes("UNICLAS") || descUpper.includes("PAO DE ACUCA") || descUpper.includes("NUBANK")) {
-                        cat = "Faturas de Cartões Passados";
-                    } else if (descUpper.includes("CHORI") || descUpper.includes("LAPAULA") || descUpper.includes("SALTO") || descUpper.includes("REFEICOES") || descUpper.includes("ZAMBRANO") || descUpper.includes("PATUSCADA") || descUpper.includes("LEANDRO") || descUpper.includes("BOTECO") || descUpper.includes("NONA PIERINA") || descUpper.includes("THAI") || descUpper.includes("GEPETTO") || descUpper.includes("SOFT ICE") || descUpper.includes("DELICATTO") || descUpper.includes("BAR E") || descUpper.includes("COSTELAO") || descUpper.includes("CAFFE")) {
-                        cat = "Alimentação Fora & Bares";
-                    } else if (descUpper.includes("MERCADO PAG") || descUpper.includes("PAGAR ME") || descUpper.includes("SPOTIFY") || descUpper.includes("SEGURO") || descUpper.includes("GOOGLE") || descUpper.includes("WELLHUB") || descUpper.includes("CHATGP") || descUpper.includes("AMAZON")) {
-                        cat = "Assinaturas & Serviços Digitais";
-                    } else if (descUpper.includes("UBER") || descUpper.includes("TRANSP COLET") || descUpper.includes("VEICULOS")) {
-                        cat = "Mobilidade & Transporte";
-                    } else if (descUpper.includes("POLICIA FED")) {
-                        cat = "Taxas & Burocracias";
-                    } else if (descUpper.includes("ADONIS") || descUpper.includes("FOLIA B") || descUpper.includes("ROSILDO") || descUpper.includes("MARCELO")) {
-                        cat = "Repasses a Terceiros";
-                    }
-
-                    let bankLabel = "Itaú";
-                    if (origin === 'nubank') bankLabel = "Nubank";
-                    else if (origin === 'btg') bankLabel = "BTG";
-                    else if (origin === 'inter') bankLabel = "Inter";
-
-                    // Determinar o método de pagamento
-                    let method = "Débito";
-                    if (text.toUpperCase().includes("PIX") || text.toUpperCase().includes("PORTABILIDADE")) {
-                        method = "Pix";
-                    } else if (text.toUpperCase().includes("BOLETO") || text.toUpperCase().includes("BOLET")) {
-                        method = "Boleto";
-                    } else if (text.toUpperCase().includes("NUPAY")) {
-                        method = "NuPay";
-                    }
-
-                    parsedTransactions.push({
-                        date: txDate,
-                        desc: desc.substring(0, 32),
-                        cat: cat,
-                        bank: bankLabel,
-                        method: method,
-                        val: Math.abs(val)
-                    });
                 }
             });
 
             if (parsedTransactions.length === 0) {
-                showToast("Nenhuma transação de saída compatível com este banco e com o período de visualização ativo foi encontrada.", "error");
+                showToast("Nenhuma transação válida de saída foi detectada. Verifique se o formato do extrato está correto.", "error");
                 return;
             }
 
+            // Alimentando o banco de dados do mês ativo
             db[currentMonth].transactions.push(...parsedTransactions);
             recalculateMetrics(currentMonth);
             renderDashboard();
@@ -692,6 +672,7 @@
                 categoriesMap[t.cat].val += t.val;
             });
 
+            // Ajustar cores para cada categoria
             const colorMapping = {
                 "Moradia & Estrutura Fixa": "bg-blue-500",
                 "Faturas de Cartões Passados": "bg-indigo-500",
@@ -746,6 +727,7 @@
             showToast(`Dados de ${currentMonth === 'maio' ? 'Maio' : 'Junho'} apagados com sucesso.`, "info");
         }
 
+        // Executar carregamento inicial do dashboard
         window.onload = function() {
             renderDashboard();
         }
