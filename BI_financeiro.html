@@ -116,7 +116,7 @@
             <div class="flex flex-col gap-3">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--on-surface-de-emphasis)]">Importador Multibancos</h2>
-                    <span class="text-[10px] text-[var(--primary)] font-semibold bg-[var(--primary-container)] px-2 py-0.5 rounded">Junho</span>
+                    <span id="import-month-badge" class="text-[10px] text-[var(--primary)] font-semibold bg-[var(--primary-container)] px-2 py-0.5 rounded">Maio</span>
                 </div>
                 <p class="text-xs text-[var(--on-surface-de-emphasis)] leading-relaxed">
                     Cole as linhas brutas dos extratos do seu banco e selecione a carteira correspondente para processar o fluxo consolidado.
@@ -138,8 +138,8 @@
                         <span class="material-icons text-sm">trending_up</span> Banco Inter
                     </button>
                 </div>
-                <button onclick="clearJuneData()" class="text-center text-[var(--error)] hover:underline text-xs py-1 transition-all">
-                    Limpar dados de Junho
+                <button id="btn-clear-data" onclick="clearCurrentMonthData()" class="text-center text-[var(--error)] hover:underline text-xs py-1 transition-all">
+                    Limpar dados de Maio
                 </button>
             </div>
 
@@ -299,7 +299,7 @@
                     { label: "Supermercado & Abastecimento", val: 452.95, color: "bg-green-500", percentage: "8%" },
                     { label: "Assinaturas & Serviços Digitais", val: 384.41, color: "bg-cyan-500", percentage: "6%" },
                     { label: "Alimentação Fora & Bares", val: 351.52, color: "bg-yellow-500", percentage: "6%" },
-                    { label: "Taxas & Burocracias (Polícia Federal)", val: 204.77, color: "bg-red-500", percentage: "4%" },
+                    { label: "Taxas & Burocracias", val: 204.77, color: "bg-red-500", percentage: "4%" },
                     { label: "Repasses a Terceiros", val: 144.56, color: "bg-purple-500", percentage: "2%" },
                     { label: "Mobilidade & Transporte", val: 93.93, color: "bg-pink-500", percentage: "2%" }
                 ],
@@ -405,16 +405,12 @@
             document.getElementById('kpi-custos-fixos').textContent = formatCurrency(data.custosFixos);
             document.getElementById('kpi-custos-variaveis').textContent = formatCurrency(data.custosVariaveis);
             
-            if (currentMonth === 'junho' && data.totalSaidas > 0) {
-                const fixoRatio = (data.custosFixos / data.totalSaidas * 100).toFixed(1);
-                document.getElementById('kpi-eficiencia').textContent = `${fixoRatio}%`;
+            // Renderizando taxa de eficiência baseada nos dados do banco de dados de forma uniforme
+            document.getElementById('kpi-eficiencia').textContent = data.eficiencia || "0.0%";
+            if (data.totalSaidas > 0) {
                 document.getElementById('kpi-eficiencia').className = "text-2xl font-bold text-green-600";
-            } else if (currentMonth === 'junho') {
-                document.getElementById('kpi-eficiencia').textContent = "0.0%";
-                document.getElementById('kpi-eficiencia').className = "text-2xl font-bold text-[var(--on-surface-de-emphasis)]";
             } else {
-                document.getElementById('kpi-eficiencia').textContent = data.eficiencia;
-                document.getElementById('kpi-eficiencia').className = "text-2xl font-bold text-green-600";
+                document.getElementById('kpi-eficiencia').className = "text-2xl font-bold text-[var(--on-surface-de-emphasis)]";
             }
 
             // Renderizando a divisão por Bancos de forma dinâmica (Suporte a Itaú, Nubank, BTG, Inter)
@@ -512,18 +508,24 @@
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
         }
 
-        // Alterar visualização de meses
+        // Alterar visualização de meses e adaptar a interface do importador lateral
         function switchMonth(month) {
             currentMonth = month;
             const btnMaio = document.getElementById('btn-tab-maio');
             const btnJunho = document.getElementById('btn-tab-junho');
+            const importMonthBadge = document.getElementById('import-month-badge');
+            const btnClearData = document.getElementById('btn-clear-data');
             
             if (month === 'maio') {
                 btnMaio.className = "py-2 px-3 rounded-lg text-xs font-semibold bg-[var(--primary-container)] text-[var(--on-primary-container)] border border-transparent transition-all";
                 btnJunho.className = "py-2 px-3 rounded-lg text-xs font-semibold bg-[var(--surface-container)] text-[var(--on-surface-de-emphasis)] hover:bg-[var(--surface-container-high)] border border-transparent transition-all";
+                importMonthBadge.textContent = "Maio";
+                btnClearData.textContent = "Limpar dados de Maio";
             } else {
                 btnJunho.className = "py-2 px-3 rounded-lg text-xs font-semibold bg-[var(--primary-container)] text-[var(--on-primary-container)] border border-transparent transition-all";
                 btnMaio.className = "py-2 px-3 rounded-lg text-xs font-semibold bg-[var(--surface-container)] text-[var(--on-surface-de-emphasis)] hover:bg-[var(--surface-container-high)] border border-transparent transition-all";
+                importMonthBadge.textContent = "Junho";
+                btnClearData.textContent = "Limpar dados de Junho";
             }
             renderDashboard();
         }
@@ -538,11 +540,12 @@
             const lines = rawText.split('\n');
             const parsedTransactions = [];
             
-            let tempDate = "28/06/2026"; // Default/Fallback date
+            // Define fallback date based on active month
+            let tempDate = currentMonth === 'maio' ? "28/05/2026" : "28/06/2026";
 
-            // Regex simples para capturar datas no formato bancário brasileiro
-            const dateRegex = /(\d{2})\/(\d{2})\/(\d{4})/; // 28/06/2026
-            const shortDateRegex = /(\d{2})\s(JAN|FEB|MAR|ABR|MAI|JUN|JUL|AGO|SET|OUT|NOV|DEZ|MAI|AGO)/i; // 18 JUN
+            // Regex simples para capturar datas no formato brasileiro
+            const dateRegex = /(\d{2})\/(\d{2})\/(\d{4})/; 
+            const shortDateRegex = /(\d{2})\s(JAN|FEB|MAR|ABR|MAI|JUN|JUL|AGO|SET|OUT|NOV|DEZ|MAI|AGO)/i; 
 
             lines.forEach(line => {
                 // Atualizar data de referência se encontrar uma no caminho
@@ -557,7 +560,7 @@
                             "JAN": "01", "FEB": "02", "MAR": "03", "ABR": "04", "MAI": "05", "JUN": "06",
                             "JUL": "07", "AGO": "08", "SET": "09", "OUT": "10", "NOV": "11", "DEZ": "12"
                         };
-                        const monthStr = months[shortMatch[2].toUpperCase()] || "06";
+                        const monthStr = months[shortMatch[2].toUpperCase()] || (currentMonth === 'maio' ? "05" : "06");
                         tempDate = `${day}/${monthStr}/2026`;
                     }
                 }
@@ -631,15 +634,15 @@
                 return;
             }
 
-            // Alimentando o banco de dados de Junho
-            db.junho.transactions.push(...parsedTransactions);
-            recalculateJuneMetrics();
-            switchMonth('junho');
-            showToast(`${parsedTransactions.length} transações adicionadas com sucesso à carteira de Junho!`, "success");
+            // Alimentando o banco de dados do mês ativo
+            db[currentMonth].transactions.push(...parsedTransactions);
+            recalculateMetrics(currentMonth);
+            renderDashboard();
+            showToast(`${parsedTransactions.length} transações adicionadas com sucesso à carteira de ${currentMonth === 'maio' ? 'Maio' : 'Junho'}!`, "success");
         }
 
-        function recalculateJuneMetrics() {
-            const data = db.junho;
+        function recalculateMetrics(month) {
+            const data = db[month];
             let total = 0;
             let fixo = 0;
             let variavel = 0;
@@ -699,10 +702,16 @@
             data.btg = btgTot;
             data.inter = interTot;
             data.categories = parsedCats;
+
+            if (total > 0) {
+                data.eficiencia = (fixo / total * 100).toFixed(1) + "%";
+            } else {
+                data.eficiencia = "0.0%";
+            }
         }
 
-        function clearJuneData() {
-            db.junho = {
+        function clearCurrentMonthData() {
+            db[currentMonth] = {
                 totalSaidas: 0,
                 custosFixos: 0,
                 custosVariaveis: 0,
@@ -714,8 +723,8 @@
                 categories: [],
                 transactions: []
             };
-            switchMonth('junho');
-            showToast("Dados do mês de Junho apagados com sucesso.", "info");
+            renderDashboard();
+            showToast(`Dados de ${currentMonth === 'maio' ? 'Maio' : 'Junho'} apagados com sucesso.`, "info");
         }
 
         // Executar carregamento inicial do dashboard
