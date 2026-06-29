@@ -3,752 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BI Financeiro de Alta Performance - Raúl Rojas Méndez</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <title>BI Financeiro 360° • Vitalício</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        :root {
-            --primary: #0b57d0;
-            --primary-container: #d3e3fd;
-            --on-primary-container: #041e49;
-            --surface: #ffffff;
-            --surface-container: #f0f4f9;
-            --surface-container-high: #e9ebf0;
-            --on-surface-default: #1b1c1d;
-            --on-surface-de-emphasis: #444746;
-            --success: #146c2e;
-            --success-container: #c4eed0;
-            --error: #b3261e;
-            --error-container: #ffcdd2;
-            --warning: #f9ab00;
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --primary: #a8c7fa;
-                --primary-container: #1f3760;
-                --on-primary-container: #d3e3fd;
-                --surface: #101218;
-                --surface-container: #1e2025;
-                --surface-container-high: #2a2b36;
-                --on-surface-default: #ffffff;
-                --on-surface-de-emphasis: #c4c7c5;
-                --success: #6dd58c;
-                --success-container: #1f3025;
-                --error: #f2b8b5;
-                --error-container: #381a21;
-            }
-        }
-        body {
-            background-color: var(--surface-container);
-            color: var(--on-surface-default);
-            font-family: 'Inter', sans-serif;
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--surface-container-high);
-            border-radius: 99px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--on-surface-de-emphasis);
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .tooltip { position: relative; display: inline-block; cursor: help; }
+        .tooltip .tooltiptext { visibility: hidden; width: 320px; background-color: #0f172a; color: #fff; text-align: left; border-radius: 8px; padding: 15px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 12px; line-height: 1.6; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+        .toast { transition: all 0.3s; }
     </style>
 </head>
-<body class="h-screen overflow-hidden flex flex-col">
+<body class="p-4 md:p-8">
 
-    <!-- Sistema de Notificações Toast Personalizado -->
-    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
-
-    <header class="bg-[var(--surface)] border-b border-[var(--surface-container-high)] px-6 py-4 flex items-center justify-between z-10 shrink-0">
-        <div class="flex items-center gap-3">
-            <span class="material-icons text-[var(--primary)] text-3xl">analytics</span>
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <h1 class="text-lg font-bold tracking-tight text-[var(--on-surface-default)]">BI Financeiro Consolidado</h1>
-                <p class="text-xs text-[var(--on-surface-de-emphasis)]">Gestão Multibancos & Controle de Caixa • Raúl Rojas Méndez</p>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">BI Financeiro 360°</h1>
+                <p class="text-slate-500 font-medium">Gestão Universal • Raúl Rojas Méndez</p>
             </div>
-        </div>
-        <div class="flex items-center gap-4">
-            <div id="theme-badge" class="bg-[var(--primary-container)] text-[var(--on-primary-container)] px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                <span class="material-icons text-sm">verified_user</span>
-                Controle Ativo • Multibancos 2026
+            <div class="flex gap-3 bg-white p-2 rounded-xl shadow-sm border">
+                <select id="select-mes" onchange="render()" class="p-2 rounded-lg font-bold text-slate-700 focus:outline-none"></select>
+                <select id="select-ano" onchange="render()" class="p-2 rounded-lg font-bold text-slate-700 focus:outline-none"></select>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <div class="flex-1 flex overflow-hidden">
-        
-        <!-- Sidebar Esquerda -->
-        <aside class="w-80 bg-[var(--surface)] border-r border-[var(--surface-container-high)] p-6 overflow-y-auto flex flex-col gap-6 shrink-0">
-            <div>
-                <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--on-surface-de-emphasis)] mb-3">Selecione o Período</h2>
-                <div class="grid grid-cols-2 gap-2">
-                    <button id="btn-tab-maio" onclick="switchMonth('maio')" class="py-2 px-3 rounded-lg text-xs font-semibold bg-[var(--primary-container)] text-[var(--on-primary-container)] border border-transparent transition-all">
-                        Maio 2026
-                    </button>
-                    <button id="btn-tab-junho" onclick="switchMonth('junho')" class="py-2 px-3 rounded-lg text-xs font-semibold bg-[var(--surface-container)] text-[var(--on-surface-de-emphasis)] hover:bg-[var(--surface-container-high)] border border-transparent transition-all">
-                        Junho 2026
-                    </button>
-                </div>
-            </div>
-
-            <hr class="border-[var(--surface-container-high)]" />
-
-            <!-- Importador Inteligente Multi-banco -->
-            <div class="flex flex-col gap-3">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--on-surface-de-emphasis)]">Importador Multibancos</h2>
-                    <span id="import-month-badge" class="text-[10px] text-[var(--primary)] font-semibold bg-[var(--primary-container)] px-2 py-0.5 rounded">Maio</span>
-                </div>
-                <p class="text-xs text-[var(--on-surface-de-emphasis)] leading-relaxed">
-                    Cole as faturas ou o extrato bruto (mesmo em formato de tabela ou texto corrido) de seus bancos para processar o fluxo consolidado.
-                </p>
-                <textarea id="raw-extrato-input" placeholder="Cole o extrato BTG, faturas Itaú, faturas ou extratos Nubank aqui..." class="w-full h-36 p-3 text-xs bg-[var(--surface-container)] border border-[var(--surface-container-high)] rounded-lg focus:outline-none focus:border-[var(--primary)] text-[var(--on-surface-default)] resize-none font-mono"></textarea>
-                
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="processExtrato('itau')" class="bg-[#ec7000] hover:brightness-110 text-white py-2 px-2 rounded-lg text-xs font-medium flex items-center justify-center gap-1 transition-all">
-                        <span class="material-icons text-sm">account_balance</span> Itaú
-                    </button>
-                    <button onclick="processExtrato('nubank')" class="bg-[#820ad1] hover:brightness-110 text-white py-2 px-2 rounded-lg text-xs font-medium flex items-center justify-center gap-1 transition-all">
-                        <span class="material-icons text-sm">payment</span> Nubank
-                    </button>
-                    <button onclick="processExtrato('btg')" class="bg-[#012c54] hover:brightness-110 text-white py-2 px-2 rounded-lg text-xs font-medium flex items-center justify-center gap-1 transition-all">
-                        <span class="material-icons text-sm">shield</span> BTG Pactual
-                    </button>
-                    <button onclick="processExtrato('inter')" class="bg-[#ff7a00] hover:brightness-110 text-white py-2 px-2 rounded-lg text-xs font-medium flex items-center justify-center gap-1 transition-all">
-                        <span class="material-icons text-sm">trending_up</span> Banco Inter
-                    </button>
-                </div>
-                <button id="btn-clear-data" onclick="clearCurrentMonthData()" class="text-center text-[var(--error)] hover:underline text-xs py-1 transition-all">
-                    Limpar dados de Maio
-                </button>
-            </div>
-
-            <hr class="border-[var(--surface-container-high)]" />
-
-            <!-- Metas & Limites de Contenção -->
-            <div class="bg-[var(--surface-container)] p-4 rounded-xl flex flex-col gap-3">
-                <h3 class="text-xs font-bold text-[var(--on-surface-default)] flex items-center gap-1">
-                    <span class="material-icons text-sm text-[var(--warning)]">warning</span>
-                    Diretriz Estratégica (PM)
-                </h3>
-                <p class="text-xs text-[var(--on-surface-de-emphasis)] leading-relaxed">
-                    Manter o "Custo de Rua" sob rédea curta. O teto recomendado para gastos variáveis é de <strong>R$ 1.500,00</strong> para garantir a recomposição de caixa.
-                </p>
-            </div>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="flex-1 p-6 overflow-y-auto flex flex-col gap-6">
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                
-                <!-- Card 1 -->
-                <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Desembolso Real</span>
-                        <span class="material-icons text-red-500">trending_down</span>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <aside class="lg:col-span-1 space-y-6">
+                <div class="bg-white p-6 rounded-3xl border shadow-lg border-slate-100">
+                    <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <span class="material-icons text-blue-600">psychology</span>
+                        Importador Inteligente
+                    </h2>
+                    <textarea id="raw-input" placeholder="Cole o texto do extrato ou fatura aqui..." class="w-full h-40 p-4 border rounded-2xl text-xs font-mono bg-slate-50 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                    
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Ou importar PDF:</label>
+                        <input type="file" id="pdf-input" accept="application/pdf" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                     </div>
-                    <div id="kpi-total-saidas" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 0,00</div>
-                    <div class="text-[10px] text-[var(--on-surface-de-emphasis)] mt-1">Excluindo transferências de mesma titularidade</div>
-                </div>
 
-                <!-- Card 2 -->
-                <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Estrutura Fixa + Faturas</span>
-                        <span class="material-icons text-blue-500">lock</span>
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        <button onclick="process('Itaú')" class="bg-orange-600 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-orange-700 transition">Itaú</button>
+                        <button onclick="process('Nubank')" class="bg-purple-700 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-purple-800 transition">Nubank</button>
+                        <button onclick="process('BTG')" class="bg-blue-900 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-blue-950 transition">BTG</button>
+                        <button onclick="process('Inter')" class="bg-orange-500 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-orange-600 transition">Inter</button>
                     </div>
-                    <div id="kpi-custos-fixos" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 0,00</div>
-                    <div class="text-[10px] text-[var(--on-surface-de-emphasis)] mt-1">Aluguel, Condomínio, Contas e Cartões passados</div>
+                    <button onclick="clearData()" class="text-red-500 text-xs font-bold w-full text-center underline opacity-70 hover:opacity-100">Limpar dados do período</button>
                 </div>
+            </aside>
 
-                <!-- Card 3 -->
-                <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Consumo Variável</span>
-                        <span class="material-icons text-yellow-500">shopping_bag</span>
-                    </div>
-                    <div id="kpi-custos-variaveis" class="text-2xl font-bold text-[var(--on-surface-default)]">R$ 0,00</div>
-                    <div class="text-[10px] text-[var(--on-surface-de-emphasis)] mt-1">Alimentação, Uber, Mercado e taxas avulsas</div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-medium text-[var(--on-surface-de-emphasis)]">Eficiência do Período</span>
-                        <span class="material-icons text-green-500">security</span>
-                    </div>
-                    <div id="kpi-eficiencia" class="text-2xl font-bold text-green-600">0.0%</div>
-                    <div class="text-[10px] text-[var(--on-surface-de-emphasis)] mt-1">Proporção de gastos fixos vs consumo geral</div>
-                </div>
-            </div>
-
-            <!-- Gráficos e Distribuição -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
-                <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm lg:col-span-2 flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-[var(--on-surface-default)] mb-4 flex items-center gap-2">
-                            <span class="material-icons text-blue-500 text-sm">pie_chart</span>
-                            Divisão de Gastos por Categorias (Consolidado)
-                        </h3>
-                        <div id="category-bars-container" class="flex flex-col gap-4">
-                            <!-- Inserido dinamicamente pelo JS -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--surface-container-high)] shadow-sm flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-[var(--on-surface-default)] mb-4 flex items-center gap-2">
-                            <span class="material-icons text-indigo-500 text-sm">account_balance_wallet</span>
-                            Saídas Reais por Banco
-                        </h3>
-                        <div id="bank-breakdown-container" class="flex flex-col gap-4 py-2">
-                            <!-- Será preenchido dinamicamente pelo JS -->
-                        </div>
-                    </div>
-                    <div class="bg-[var(--surface-container)] p-3 rounded-xl text-center text-[11px] text-[var(--on-surface-de-emphasis)] leading-relaxed mt-4">
-                        O monitoramento conjunto do <strong>Itaú, Nubank, BTG e Inter</strong> garante maior visibilidade do caixa e previne perdas por tarifas e juros evitáveis.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tabela de Lançamentos -->
-            <div class="bg-[var(--surface)] rounded-2xl border border-[var(--surface-container-high)] shadow-sm flex-1 flex flex-col min-h-[300px]">
-                <div class="px-6 py-4 border-b border-[var(--surface-container-high)] flex items-center justify-between">
-                    <h3 class="text-sm font-bold text-[var(--on-surface-default)] flex items-center gap-2">
-                        <span class="material-icons text-blue-500 text-sm">list</span>
-                        Extrato Consolidado Detalhado (Multibancos)
+            <main class="lg:col-span-3 space-y-6">
+                <div id="kpi-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4"></div>
+                <div class="bg-white p-6 rounded-3xl border shadow-sm">
+                    <h3 class="font-bold text-slate-900 mb-6 flex items-center gap-2">
+                        <span class="material-icons text-slate-400">list</span>
+                        Extrato Consolidado Detalhado
                     </h3>
-                    <div class="flex items-center gap-2">
-                        <span id="trans-count" class="text-xs text-[var(--on-surface-de-emphasis)] bg-[var(--surface-container-high)] px-3 py-1 rounded-full font-semibold">
-                            0 transações
-                        </span>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs text-slate-400 uppercase">
+                                <tr><th class="pb-4">Data</th><th class="pb-4">Descrição</th><th class="pb-4">Banco</th><th class="pb-4 text-right">Valor</th></tr>
+                            </thead>
+                            <tbody id="tx-body" class="divide-y divide-slate-100"></tbody>
+                        </table>
                     </div>
                 </div>
-
-                <div class="overflow-x-auto flex-1">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-[var(--surface-container-high)] text-xs font-semibold text-[var(--on-surface-de-emphasis)] bg-[var(--surface-container)]">
-                                <th class="px-6 py-3">Data</th>
-                                <th class="px-6 py-3">Descrição / Origem</th>
-                                <th class="px-6 py-3">Categoria</th>
-                                <th class="px-6 py-3">Banco</th>
-                                <th class="px-6 py-3">Método</th>
-                                <th class="px-6 py-3 text-right">Valor (R$)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="transactions-tbody" class="text-xs divide-y divide-[var(--surface-container-high)]">
-                            <!-- Será preenchido dinamicamente pelo JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </main>
+            </main>
+        </div>
     </div>
 
     <script>
-        let currentMonth = 'maio';
+        let db = JSON.parse(localStorage.getItem('bi_universal_v4')) || {};
+        
+        function getPeriod() { return `${document.getElementById('select-ano').value}-${document.getElementById('select-mes').value}`; }
 
-        const bankConfig = {
-            'Itaú': { color: '#ec7000', label: 'Itaú Unibanco', badgeClass: 'bg-orange-500/10 text-orange-500 border border-orange-500/20' },
-            'Nubank': { color: '#820ad1', label: 'Nubank', badgeClass: 'bg-purple-500/10 text-purple-500 border border-purple-500/20' },
-            'BTG': { color: '#012c54', label: 'BTG Pactual', badgeClass: 'bg-slate-800 text-slate-300' },
-            'Inter': { color: '#ff7a00', label: 'Banco Inter', badgeClass: 'bg-amber-500/10 text-amber-600 border border-amber-500/20' }
-        };
-
-        const db = {
-            maio: {
-                totalSaidas: 5986.43,
-                custosFixos: 4354.25,
-                custosVariaveis: 1632.18,
-                eficiencia: "72.7%",
-                itau: 3100.00,
-                nubank: 1444.28,
-                btg: 1000.00,
-                inter: 442.15,
-                categories: [
-                    { label: "Moradia & Estrutura Fixa", val: 2897.18, color: "bg-blue-500", percentage: "48%" },
-                    { label: "Faturas de Cartões Passados", val: 1457.07, color: "bg-indigo-500", percentage: "24%" },
-                    { label: "Supermercado & Abastecimento", val: 452.95, color: "bg-green-500", percentage: "8%" },
-                    { label: "Assinaturas & Serviços Digitais", val: 384.41, color: "bg-cyan-500", percentage: "6%" },
-                    { label: "Alimentação Fora & Bares", val: 351.52, color: "bg-yellow-500", percentage: "6%" },
-                    { label: "Taxas & Burocracias", val: 204.77, color: "bg-red-500", percentage: "4%" },
-                    { label: "Repasses a Terceiros", val: 144.56, color: "bg-purple-500", percentage: "2%" },
-                    { label: "Mobilidade & Transporte", val: 93.93, color: "bg-pink-500", percentage: "2%" }
-                ],
-                transactions: [
-                    { date: "08/05/2026", desc: "Aluguel (Alves e Vargas)", cat: "Moradia & Estrutura Fixa", bank: "Itaú", method: "Boleto", val: 1954.94 },
-                    { date: "04/05/2026", desc: "Fatura Paga Itaú Uniclass", cat: "Faturas de Cartões Passados", bank: "Itaú", method: "Débito", val: 668.50 },
-                    { date: "05/05/2026", desc: "Condomínio (Lume)", cat: "Moradia & Estrutura Fixa", bank: "Itaú", method: "Boleto", val: 481.49 },
-                    { date: "04/05/2026", desc: "Fatura Paga Pão de Açúcar", cat: "Faturas de Cartões Passados", bank: "Itaú", method: "Débito", val: 422.11 },
-                    { date: "07/05/2026", desc: "Fatura Cartão Nubank", cat: "Faturas de Cartões Passados", bank: "Nubank", method: "Débito", val: 366.46 },
-                    { date: "01/05/2026", desc: "Condor Champagnat", cat: "Supermercado & Abastecimento", bank: "Nubank", method: "Débito", val: 144.30 }, 
-                    { date: "10/05/2026", desc: "Condor Nilo Peçanha", cat: "Supermercado & Abastecimento", bank: "Nubank", method: "Débito", val: 128.11 },
-                    { date: "01/05/2026", desc: "Vivo Telecomunicações", cat: "Moradia & Estrutura Fixa", bank: "Nubank", method: "Pix", val: 120.00 },
-                    { date: "05/05/2026", desc: "BTG Pactual Seguro Fixo", cat: "Moradia & Estrutura Fixa", bank: "BTG", method: "Boleto", val: 500.00 },
-                    { date: "15/05/2026", desc: "BTG Corretora Custódia", cat: "Moradia & Estrutura Fixa", bank: "BTG", method: "Débito", val: 500.00 },
-                    { date: "05/05/2026", desc: "Vivo Telecomunicações", cat: "Moradia & Estrutura Fixa", bank: "Inter", method: "Débito Direto", val: 120.00 },
-                    { date: "04/05/2026", desc: "Energia Copel", cat: "Moradia & Estrutura Fixa", bank: "Inter", method: "Pix QRS", val: 119.14 },
-                    { date: "02/05/2026", desc: "Chori Getulio", cat: "Alimentação Fora & Bares", bank: "Nubank", method: "Débito", val: 96.00 },
-                    { date: "03/05/2026", desc: "Condor Nilo Peçanha", cat: "Supermercado & Abastecimento", bank: "Nubank", method: "Débito", val: 93.45 },
-                    { date: "23/05/2026", desc: "Lapaula Lan", cat: "Alimentação Fora & Bares", bank: "Itaú", method: "Pix QRS", val: 91.00 },
-                    { date: "20/05/2026", desc: "Mercado Pago Intermediação", cat: "Assinaturas & Serviços Digitais", bank: "Itaú", method: "Pix QRS", val: 257.83 },
-                    { date: "18/05/2026", desc: "Polícia Federal (Taxa)", cat: "Taxas & Burocracias", bank: "Itaú", method: "Pix QRS", val: 204.77 },
-                    { date: "04/05/2026", desc: "Vivo Telecomunicações (Adic)", cat: "Moradia & Estrutura Fixa", bank: "Itaú", method: "Débito Direto", val: 79.38 },
-                    { date: "16/05/2026", desc: "Condor Nilo Peçanha", cat: "Supermercado & Abastecimento", bank: "Nubank", method: "Débito", val: 75.62 },
-                    { date: "11/05/2026", desc: "Transferência Adonis", cat: "Repasses a Terceiros", bank: "Itaú", method: "Pix", val: 50.00 },
-                    { date: "05/05/2026", desc: "Super Muffato", cat: "Supermercado & Abastecimento", bank: "Itaú", method: "Pix QRS", val: 47.37 },
-                    { date: "11/05/2026", desc: "Pagar.me Intermediação", cat: "Assinaturas & Serviços Digitais", bank: "Itaú", method: "Pix QRS", val: 48.29 },
-                    { date: "05/05/2026", desc: "Pagar.me Intermediação", cat: "Assinaturas & Serviços Digitais", bank: "Itaú", method: "Pix QRS", val: 35.64 },
-                    { date: "20/05/2026", desc: "Festval", cat: "Supermercado & Abastecimento", bank: "Itaú", method: "Pix QRS", val: 31.92 },
-                    { date: "24/05/2026", desc: "Spotify", cat: "Assinaturas & Serviços Digitais", bank: "Nubank", method: "NuPay", val: 31.90 },
-                    { date: "18/05/2026", desc: "Folia B", cat: "Repasses a Terceiros", bank: "Itaú", method: "Pix", val: 25.00 },
-                    { date: "22/05/2026", desc: "R Comendador Araujo", cat: "Alimentação Fora & Bares", bank: "Nubank", method: "Débito", val: 23.05 },
-                    { date: "05/05/2026", desc: "Saneamento Sanepar", cat: "Moradia & Estrutura Fixa", bank: "Itaú", method: "Pix QRS", val: 22.23 },
-                    { date: "01/05/2026", desc: "Transferência Rosildo", cat: "Repasses a Terceiros", bank: "Nubank", method: "Pix", val: 22.00 },
-                    { date: "18/05/2026", desc: "Transporte Coletivo", cat: "Mobilidade & Transporte", bank: "Nubank", method: "Débito", val: 18.39 },
-                    { date: "08/05/2026", desc: "Boleto Midway", cat: "Repasses a Terceiros", bank: "Itaú", method: "Boleto", val: 14.80 },
-                    { date: "23/05/2026", desc: "Salto Angel", cat: "Alimentação Fora & Bares", bank: "Itaú", method: "Pix QRS", val: 12.00 },
-                    { date: "04/05/2026", desc: "Seguro Cartão", cat: "Assinaturas & Serviços Digitais", bank: "Itaú", method: "Débito", val: 10.75 },
-                    { date: "18/05/2026", desc: "Uber (Líquido)", cat: "Mobilidade & Transporte", bank: "Nubank", method: "NuPay", val: 75.54 }
-                ]
-            },
-            junho: {
-                totalSaidas: 0,
-                custosFixos: 0,
-                custosVariaveis: 0,
-                eficiencia: "0.0%",
-                itau: 0,
-                nubank: 0,
-                btg: 0,
-                inter: 0,
-                categories: [],
-                transactions: []
-            }
-        };
-
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
+        function render() {
+            const period = getPeriod();
+            if(!db[period]) db[period] = { txs: [] };
+            const data = db[period];
             
-            let typeClasses = "bg-blue-600 text-white";
-            let icon = "info";
-            
-            if (type === 'error') {
-                typeClasses = "bg-red-600 text-white";
-                icon = "error";
-            } else if (type === 'success') {
-                typeClasses = "bg-green-600 text-white";
-                icon = "check_circle";
-            } else if (type === 'warning') {
-                typeClasses = "bg-amber-500 text-white";
-                icon = "warning";
-            }
-
-            toast.className = `${typeClasses} flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-xs font-semibold tracking-wide pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0`;
-            toast.innerHTML = `
-                <span class="material-icons text-sm">${icon}</span>
-                <span>${message}</span>
-            `;
-            
-            container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.remove('translate-y-2', 'opacity-0');
-            }, 10);
-
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-[-10px]');
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
-        }
-
-        function renderDashboard() {
-            const data = db[currentMonth];
-            
-            document.getElementById('kpi-total-saidas').textContent = formatCurrency(data.totalSaidas);
-            document.getElementById('kpi-custos-fixos').textContent = formatCurrency(data.custosFixos);
-            document.getElementById('kpi-custos-variaveis').textContent = formatCurrency(data.custosVariaveis);
-            
-            document.getElementById('kpi-eficiencia').textContent = data.eficiencia || "0.0%";
-            if (data.totalSaidas > 0) {
-                document.getElementById('kpi-eficiencia').className = "text-2xl font-bold text-green-600";
-            } else {
-                document.getElementById('kpi-eficiencia').className = "text-2xl font-bold text-[var(--on-surface-de-emphasis)]";
-            }
-
-            const bankBreakdownContainer = document.getElementById('bank-breakdown-container');
-            bankBreakdownContainer.innerHTML = '';
-
-            const activeBanks = ['Itaú', 'Nubank', 'BTG', 'Inter'];
-            activeBanks.forEach(bKey => {
-                const bankVal = bKey === 'Itaú' ? data.itau : 
-                                bKey === 'Nubank' ? data.nubank : 
-                                bKey === 'BTG' ? data.btg : data.inter;
-                
-                const cfg = bankConfig[bKey];
-                const item = document.createElement('div');
-                item.className = "flex items-center justify-between border-b border-[var(--surface-container-high)] pb-2";
-                item.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full" style="background-color: ${cfg.color}"></span>
-                        <span class="text-xs font-semibold text-[var(--on-surface-default)]">${cfg.label}</span>
-                    </div>
-                    <span class="text-xs font-bold text-[var(--on-surface-default)]">${formatCurrency(bankVal)}</span>
-                `;
-                bankBreakdownContainer.appendChild(item);
-            });
-
-            const catsContainer = document.getElementById('category-bars-container');
-            catsContainer.innerHTML = '';
-            if (data.categories.length === 0) {
-                catsContainer.innerHTML = `
-                    <div class="text-center py-8 text-xs text-[var(--on-surface-de-emphasis)] flex flex-col items-center justify-center gap-2">
-                        <span class="material-icons text-3xl">info_outline</span>
-                        Sem dados de categoria para este mês. Use o importador ao lado!
-                    </div>`;
-            } else {
-                data.categories.forEach(cat => {
-                    const row = document.createElement('div');
-                    row.className = "flex flex-col gap-1";
-                    row.innerHTML = `
-                        <div class="flex justify-between text-xs">
-                            <span class="font-medium text-[var(--on-surface-default)]">${cat.label}</span>
-                            <span class="font-bold text-[var(--on-surface-default)]">${formatCurrency(cat.val)} (${cat.percentage})</span>
-                        </div>
-                        <div class="w-full bg-[var(--surface-container-high)] h-2 rounded-full overflow-hidden">
-                            <div class="${cat.color} h-full" style="width: ${cat.percentage}"></div>
-                        </div>
-                    `;
-                    catsContainer.appendChild(row);
-                });
-            }
-
-            const tbody = document.getElementById('transactions-tbody');
-            tbody.innerHTML = '';
-            document.getElementById('trans-count').textContent = `${data.transactions.length} transações`;
-            
-            if (data.transactions.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="px-6 py-12 text-center text-xs text-[var(--on-surface-de-emphasis)]">
-                            Nenhuma transação carregada para este mês. Cole e processe os dados na lateral!
-                        </td>
-                    </tr>
-                `;
-            } else {
-                const sortedTrans = [...data.transactions].sort((a,b) => {
-                    const dateA = a.date.split('/').reverse().join('');
-                    const dateB = b.date.split('/').reverse().join('');
-                    return dateB.localeCompare(dateA);
-                });
-
-                sortedTrans.forEach(t => {
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-[var(--surface-container)] transition-all";
-                    
-                    const bTag = bankConfig[t.bank] ? 
-                        `<span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: ${bankConfig[t.bank].color}15; color: ${bankConfig[t.bank].color}; border: 1px solid ${bankConfig[t.bank].color}30">${t.bank}</span>` : t.bank;
-
-                    tr.innerHTML = `
-                        <td class="px-6 py-3 font-medium whitespace-nowrap text-[var(--on-surface-de-emphasis)]">${t.date}</td>
-                        <td class="px-6 py-3 font-semibold text-[var(--on-surface-default)]">${t.desc}</td>
-                        <td class="px-6 py-3"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[var(--primary-container)] text-[var(--on-primary-container)]">${t.cat}</span></td>
-                        <td class="px-6 py-3">${bTag}</td>
-                        <td class="px-6 py-3 text-[var(--on-surface-de-emphasis)]">${t.method}</td>
-                        <td class="px-6 py-3 text-right font-bold text-[var(--on-surface-default)]">${formatCurrency(t.val)}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-        }
-
-        function formatCurrency(val) {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
-        }
-
-        function switchMonth(month) {
-            currentMonth = month;
-            const btnMaio = document.getElementById('btn-tab-maio');
-            const btnJunho = document.getElementById('btn-tab-junho');
-            const importMonthBadge = document.getElementById('import-month-badge');
-            const btnClearData = document.getElementById('btn-clear-data');
-            
-            if (month === 'maio') {
-                btnMaio.className = "py-2 px-3 rounded-lg text-xs font-semibold bg-[var(--primary-container)] text-[var(--on-primary-container)] border border-transparent transition-all";
-                btnJunho.className = "py-2 px-3 rounded-lg text-xs font-semibold bg-[var(--surface-container)] text-[var(--on-surface-de-emphasis)] hover:bg-[var(--surface-container-high)] border border-transparent transition-all";
-                importMonthBadge.textContent = "Maio";
-                btnClearData.textContent = "Limpar dados de Maio";
-            } else {
-                btnJunho.className = "py-2 px-3 rounded-lg text-xs font-semibold bg-[var(--primary-container)] text-[var(--on-primary-container)] border border-transparent transition-all";
-                btnMaio.className = "py-2 px-3 rounded-lg text-xs font-semibold bg-[var(--surface-container)] text-[var(--on-surface-de-emphasis)] hover:bg-[var(--surface-container-high)] border border-transparent transition-all";
-                importMonthBadge.textContent = "Junho";
-                btnClearData.textContent = "Limpar dados de Junho";
-            }
-            renderDashboard();
-        }
-
-        // HEURISTIC PARSER INTELIGENTE DE ALTA RESILIÊNCIA
-        function processExtrato(origin) {
-            const rawText = document.getElementById('raw-extrato-input').value;
-            if (!rawText.trim()) {
-                showToast("Por favor, cole um fragmento de extrato antes de processar.", "warning");
-                return;
-            }
-
-            const lines = rawText.split('\n');
-            const parsedTransactions = [];
-            
-            let targetMonthNum = currentMonth === 'maio' ? "05" : "06";
-            let targetYear = "2026";
-            let fallbackDate = `28/${targetMonthNum}/${targetYear}`;
-            let currentLineDate = null;
-
-            // Dicionário de meses de Extrato Corrido
-            const monthMap = {
-                "JAN": "01", "FEB": "02", "MAR": "03", "ABR": "04", "MAI": "05", "JUN": "06",
-                "JUL": "07", "AGO": "08", "SET": "09", "OUT": "10", "NOV": "11", "DEZ": "12"
-            };
-
-            lines.forEach((line) => {
-                let text = line.trim();
-                if (!text) return;
-
-                // 1. Limpeza de ruídos de scan ou OCR
-                text = text.replace(/[\)\@\*]+/g, '').trim();
-
-                // 2. Extração de Data
-                let dateMatch = text.match(/(\d{2})\/(\d{2})\/(\d{4})/);
-                let shortDateSlashMatch = text.match(/(\d{2})\/(\d{2})/);
-                let shortDateTextMatch = text.match(/(\d{2})\s*(JAN|FEB|MAR|ABR|MAI|JUN|JUL|AGO|SET|OUT|NOV|DEZ)/i);
-
-                let dateFound = null;
-
-                if (dateMatch) {
-                    if (dateMatch[2] === targetMonthNum) {
-                        dateFound = `${dateMatch[1]}/${dateMatch[2]}/${dateMatch[3]}`;
-                    }
-                } else if (shortDateSlashMatch) {
-                    if (shortDateSlashMatch[2] === targetMonthNum) {
-                        dateFound = `${shortDateSlashMatch[1]}/${shortDateSlashMatch[2]}/${targetYear}`;
-                    }
-                } else if (shortDateTextMatch) {
-                    let mNum = monthMap[shortDateTextMatch[2].toUpperCase()];
-                    if (mNum === targetMonthNum) {
-                        dateFound = `${shortDateTextMatch[1]}/${mNum}/${targetYear}`;
-                    }
-                }
-
-                if (dateFound) {
-                    currentLineDate = dateFound;
-                }
-
-                // 3. Detecção e limpeza de valores financeiros
-                let cleanedTextForValue = text.replace(/R\$\s*/gi, '').replace(/\$\s*/g, '').trim();
-                let valueRegex = /(-\s*\d+[\.,]\d{2}|\d+[\.,]\d{2})/g;
-                let valueMatches = cleanedTextForValue.match(valueRegex);
-
-                if (valueMatches && valueMatches.length > 0) {
-                    let rawVal = valueMatches[valueMatches.length - 1];
-                    let val = parseFloat(rawVal.replace(/\s/g, '').replace(/[^0-9,-]/g, '').replace(',', '.'));
-
-                    // Filtros de exclusão (saldo do dia, portabilidade, limites, etc.)
-                    if (text.toUpperCase().includes("SALDO DIÁRIO") || text.toUpperCase().includes("SALDO DO DIA") || text.toUpperCase().includes("PORTABILIDADE DE SALÁRIO") || text.toUpperCase().includes("SALÁRIO") || text.toUpperCase().includes("LIMITE DE CRÉDITO") || text.toUpperCase().includes("PAGAMENTO RECEBIDO")) {
-                        return;
-                    }
-
-                    // Ignorar transferências de mesma titularidade
-                    if (text.toUpperCase().includes("RAUL ROJAS") || text.toUpperCase().includes("RAÚL ROJAS")) {
-                        if (!text.toUpperCase().includes("WELLHUB")) {
-                            return; // Ignora auto-transferência
-                        }
-                    }
-
-                    // Se encontrou valor e temos uma data válida para o mês alvo
-                    let txDate = currentLineDate || fallbackDate;
-                    if (txDate.split('/')[1] !== targetMonthNum) {
-                        return; // Pula transações fora do mês selecionado
-                    }
-
-                    // Extrair descrição removendo datas e valores
-                    let desc = text;
-                    if (dateMatch) desc = desc.replace(dateMatch[0], '');
-                    if (shortDateSlashMatch) desc = desc.replace(shortDateSlashMatch[0], '');
-                    if (shortDateTextMatch) desc = desc.replace(shortDateTextMatch[0], '');
-                    desc = desc.replace(/R\$\s*/gi, '').replace(/\$\s*/g, '').replace(rawVal, '').replace(/[\/\|\s\-]+/g, ' ').trim();
-
-                    // Se a descrição sobrou muito vazia, pula
-                    if (desc.length < 3) return;
-
-                    // Classificação heurística refinada por palavras-chave reais das faturas
-                    let cat = "Consumo Variável";
-                    let descUpper = desc.toUpperCase();
-
-                    if (descUpper.includes("CONDOR") || descUpper.includes("MUFFATO") || descUpper.includes("FESTVAL") || descUpper.includes("BEAL")) {
-                        cat = "Supermercado & Abastecimento";
-                    } else if (descUpper.includes("ALVES") || descUpper.includes("LUME") || descUpper.includes("SANEPAR") || descUpper.includes("COPEL") || descUpper.includes("TELEFONICA") || descUpper.includes("VIVO") || descUpper.includes("CASA CHINA")) {
-                        cat = "Moradia & Estrutura Fixa";
-                    } else if (descUpper.includes("FATURA PAGA") || descUpper.includes("UNICLAS") || descUpper.includes("PAO DE ACUCA") || descUpper.includes("NUBANK")) {
-                        cat = "Faturas de Cartões Passados";
-                    } else if (descUpper.includes("CHORI") || descUpper.includes("LAPAULA") || descUpper.includes("SALTO") || descUpper.includes("REFEICOES") || descUpper.includes("ZAMBRANO") || descUpper.includes("PATUSCADA") || descUpper.includes("LEANDRO") || descUpper.includes("BOTECO") || descUpper.includes("NONA PIERINA") || descUpper.includes("THAI") || descUpper.includes("GEPETTO") || descUpper.includes("SOFT ICE") || descUpper.includes("DELICATTO") || descUpper.includes("BAR E") || descUpper.includes("COSTELAO") || descUpper.includes("CAFFE")) {
-                        cat = "Alimentação Fora & Bares";
-                    } else if (descUpper.includes("MERCADO PAG") || descUpper.includes("PAGAR ME") || descUpper.includes("SPOTIFY") || descUpper.includes("SEGURO") || descUpper.includes("GOOGLE") || descUpper.includes("WELLHUB") || descUpper.includes("CHATGP") || descUpper.includes("AMAZON")) {
-                        cat = "Assinaturas & Serviços Digitais";
-                    } else if (descUpper.includes("UBER") || descUpper.includes("TRANSP COLET") || descUpper.includes("VEICULOS")) {
-                        cat = "Mobilidade & Transporte";
-                    } else if (descUpper.includes("POLICIA FED")) {
-                        cat = "Taxas & Burocracias";
-                    } else if (descUpper.includes("ADONIS") || descUpper.includes("FOLIA B") || descUpper.includes("ROSILDO") || descUpper.includes("MARCELO")) {
-                        cat = "Repasses a Terceiros";
-                    }
-
-                    let bankLabel = "Itaú";
-                    if (origin === 'nubank') bankLabel = "Nubank";
-                    else if (origin === 'btg') bankLabel = "BTG";
-                    else if (origin === 'inter') bankLabel = "Inter";
-
-                    // Determinar o método de pagamento
-                    let method = "Débito";
-                    if (text.toUpperCase().includes("PIX") || text.toUpperCase().includes("PORTABILIDADE")) {
-                        method = "Pix";
-                    } else if (text.toUpperCase().includes("BOLETO") || text.toUpperCase().includes("BOLET")) {
-                        method = "Boleto";
-                    } else if (text.toUpperCase().includes("NUPAY")) {
-                        method = "NuPay";
-                    }
-
-                    parsedTransactions.push({
-                        date: txDate,
-                        desc: desc.substring(0, 32),
-                        cat: cat,
-                        bank: bankLabel,
-                        method: method,
-                        val: Math.abs(val)
-                    });
-                }
-            });
-
-            if (parsedTransactions.length === 0) {
-                showToast("Nenhuma transação de saída compatível com este banco e com o período de visualização ativo foi encontrada.", "error");
-                return;
-            }
-
-            db[currentMonth].transactions.push(...parsedTransactions);
-            recalculateMetrics(currentMonth);
-            renderDashboard();
-            showToast(`${parsedTransactions.length} transações adicionadas com sucesso à carteira de ${currentMonth === 'maio' ? 'Maio' : 'Junho'}!`, "success");
-        }
-
-        function recalculateMetrics(month) {
-            const data = db[month];
-            let total = 0;
-            let fixo = 0;
-            let variavel = 0;
-            let itauTot = 0;
-            let nuTot = 0;
-            let btgTot = 0;
-            let interTot = 0;
-
-            const categoriesMap = {};
-
-            data.transactions.forEach(t => {
+            let total = 0, fixed = 0, variable = 0;
+            data.txs.forEach(t => {
                 total += t.val;
-                if (t.bank === 'Itaú') itauTot += t.val;
-                else if (t.bank === 'Nubank') nuTot += t.val;
-                else if (t.bank === 'BTG') btgTot += t.val;
-                else if (t.bank === 'Inter') interTot += t.val;
-
-                if (t.cat === "Moradia & Estrutura Fixa" || t.cat === "Faturas de Cartões Passados") {
-                    fixo += t.val;
-                } else {
-                    variavel += t.val;
-                }
-
-                if (!categoriesMap[t.cat]) {
-                    categoriesMap[t.cat] = { label: t.cat, val: 0, color: "bg-blue-500", percentage: "0%" };
-                }
-                categoriesMap[t.cat].val += t.val;
+                if(t.cat === 'Moradia' || t.cat === 'Faturas') fixed += t.val;
+                else variable += t.val;
             });
 
-            const colorMapping = {
-                "Moradia & Estrutura Fixa": "bg-blue-500",
-                "Faturas de Cartões Passados": "bg-indigo-500",
-                "Supermercado & Abastecimento": "bg-green-500",
-                "Assinaturas & Serviços Digitais": "bg-cyan-500",
-                "Alimentação Fora & Bares": "bg-yellow-500",
-                "Taxas & Burocracias": "bg-red-500",
-                "Repasses a Terceiros": "bg-purple-500",
-                "Mobilidade & Transporte": "bg-pink-500",
-                "Consumo Variável": "bg-gray-400"
+            const kpis = [
+                { id: 'total', title: 'Desembolso Real', val: total, help: "Soma de todas as saídas reais (excluindo transferências entre contas).", calc: "Σ (Todos os débitos - Pix próprios)", comm: "Indica o volume real de capital que saiu do ecossistema." },
+                { id: 'fixed', title: 'Estrutura Fixa', val: fixed, help: "Despesas de manutenção de vida (Aluguel, contas fixas, faturas passadas).", calc: "Σ (Moradia + Faturas + Serviços Fiscais)", comm: "É a linha de base para sua segurança financeira." },
+                { id: 'variable', title: 'Consumo Variável', val: variable, help: "Despesas de conveniência, lazer, apps, mercado e gastos avulsos.", calc: "Desembolso Real - Estrutura Fixa", comm: "Sua margem de manobra. Teto sugerido: R$ 1.500." },
+                { id: 'eff', title: 'Eficiência', val: total > 0 ? (100 - (variable/total*100)).toFixed(1) + '%' : '0%', help: "Relação entre sua estrutura fixa e gastos variáveis.", calc: "100 - (Variável / Total) * 100", comm: "Meta: manter acima de 70%." }
+            ];
+
+            document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
+                <div class="bg-white p-6 rounded-3xl border shadow-sm">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">${k.title}</span>
+                        <div class="tooltip">
+                            <span class="material-icons text-blue-500 text-lg cursor-help">help_outline</span>
+                            <span class="tooltiptext">
+                                <strong>O que é:</strong> ${k.help}<br><br>
+                                <strong>Cálculo:</strong> ${k.calc}<br><br>
+                                <strong>Indicação:</strong> ${k.comm}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-black text-slate-900">${typeof k.val === 'number' ? 'R$ ' + k.val.toFixed(2) : k.val}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('tx-body').innerHTML = data.txs.map(t => `
+                <tr>
+                    <td class="py-4 text-slate-500">${t.d}</td>
+                    <td class="py-4 font-bold text-slate-800">${t.desc}</td>
+                    <td class="py-4 text-xs font-semibold text-slate-400">${t.bank}</td>
+                    <td class="py-4 text-right font-black text-slate-900">R$ ${t.val.toFixed(2)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function process(bank) {
+            const raw = document.getElementById('raw-input').value;
+            const period = getPeriod();
+            if(!db[period]) db[period] = { txs: [] };
+            const lines = raw.split('\n');
+            lines.forEach(line => {
+                const valMatch = line.match(/R\$\s?([\d.,]+)/) || line.match(/(-?\d+[\d.,]*)/);
+                if(valMatch) {
+                    const val = parseFloat(valMatch[0].replace('R$', '').replace('.', '').replace(',', '.'));
+                    if(!isNaN(val) && val > 0) {
+                        let cat = "Consumo Variável";
+                        if(line.match(/Aluguel|Sanepar|Vivo|Alves|Condominio|Copel/i)) cat = "Moradia";
+                        if(line.match(/Fatura|Nubank|Uniclass/i)) cat = "Faturas";
+                        db[period].txs.push({ d: new Date().toLocaleDateString(), desc: line.substring(0, 30), val: val, bank: bank, cat: cat });
+                    }
+                }
+            });
+            localStorage.setItem('bi_universal_v4', JSON.stringify(db));
+            render();
+        }
+
+        // PDF Handling
+        document.getElementById('pdf-input').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = async function() {
+                const typedarray = new Uint8Array(this.result);
+                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                let fullText = "";
+                for(let i=1; i<=pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const text = await page.getTextContent();
+                    fullText += text.items.map(item => item.str).join(" ");
+                }
+                document.getElementById('raw-input').value = fullText;
             };
+            reader.readAsArrayBuffer(file);
+        });
 
-            const parsedCats = Object.values(categoriesMap).map(cat => {
-                const percentage = total > 0 ? (cat.val / total * 100).toFixed(0) + "%" : "0%";
-                return {
-                    ...cat,
-                    color: colorMapping[cat.label] || "bg-gray-400",
-                    percentage: percentage
-                };
-            }).sort((a,b) => b.val - a.val);
-
-            data.totalSaidas = total;
-            data.custosFixos = fixo;
-            data.custosVariaveis = variavel;
-            data.itau = itauTot;
-            data.nubank = nuTot;
-            data.btg = btgTot;
-            data.inter = interTot;
-            data.categories = parsedCats;
-
-            if (total > 0) {
-                data.eficiencia = (fixo / total * 100).toFixed(1) + "%";
-            } else {
-                data.eficiencia = "0.0%";
-            }
+        function setup() {
+            const m = document.getElementById('select-mes');
+            const a = document.getElementById('select-ano');
+            const months = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            months.forEach((n,i)=>{ m.add(new Option(n, (i+1).toString().padStart(2,'0'))); });
+            for(let i=2025; i<=2030; i++) a.add(new Option(i, i));
+            m.value = "06"; a.value = "2026";
+            render();
         }
-
-        function clearCurrentMonthData() {
-            db[currentMonth] = {
-                totalSaidas: 0,
-                custosFixos: 0,
-                custosVariaveis: 0,
-                eficiencia: "0.0%",
-                itau: 0,
-                nubank: 0,
-                btg: 0,
-                inter: 0,
-                categories: [],
-                transactions: []
-            };
-            renderDashboard();
-            showToast(`Dados de ${currentMonth === 'maio' ? 'Maio' : 'Junho'} apagados com sucesso.`, "info");
-        }
-
-        window.onload = function() {
-            renderDashboard();
-        }
+        function clearData() { if(confirm('Apagar tudo deste período?')) { db[getPeriod()] = { txs: [] }; localStorage.setItem('bi_universal_v4', JSON.stringify(db)); render(); } }
+        setup();
     </script>
 </body>
 </html>
