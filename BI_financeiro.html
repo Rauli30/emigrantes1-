@@ -3,59 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BI Financeiro Universal - Vitalício</title>
+    <title>BI Financeiro 360° • Vitalício</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
         .tooltip { position: relative; display: inline-block; cursor: help; }
-        .tooltip .tooltiptext { visibility: hidden; width: 300px; background-color: #1e293b; color: #fff; text-align: left; border-radius: 8px; padding: 15px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 13px; font-weight: normal; line-height: 1.5; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+        .tooltip .tooltiptext { visibility: hidden; width: 320px; background-color: #0f172a; color: #fff; text-align: left; border-radius: 8px; padding: 15px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 12px; line-height: 1.6; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
         .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+        .toast { transition: all 0.3s; }
     </style>
 </head>
-<body class="p-6">
+<body class="p-4 md:p-8">
 
     <div class="max-w-7xl mx-auto">
-        <header class="mb-8 flex justify-between items-end">
+        <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-slate-900">BI Financeiro Universal</h1>
-                <p class="text-slate-500">Gestão Multibancos & Controle de Caixa • Raúl Rojas Méndez</p>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">BI Financeiro 360°</h1>
+                <p class="text-slate-500 font-medium">Gestão Universal • Raúl Rojas Méndez</p>
             </div>
-            <div class="flex gap-4">
-                <select id="select-mes" onchange="render()" class="p-2 border rounded-lg shadow-sm"></select>
-                <select id="select-ano" onchange="render()" class="p-2 border rounded-lg shadow-sm"></select>
+            <div class="flex gap-3 bg-white p-2 rounded-xl shadow-sm border">
+                <select id="select-mes" onchange="render()" class="p-2 rounded-lg font-bold text-slate-700 focus:outline-none"></select>
+                <select id="select-ano" onchange="render()" class="p-2 rounded-lg font-bold text-slate-700 focus:outline-none"></select>
             </div>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
             <aside class="lg:col-span-1 space-y-6">
-                <div class="bg-white p-6 rounded-2xl border shadow-sm">
-                    <h2 class="font-bold text-slate-700 mb-4">Importador Inteligente</h2>
-                    <textarea id="raw-input" placeholder="Cole o extrato aqui..." class="w-full h-48 p-3 border rounded-xl text-xs font-mono bg-slate-50 mb-4"></textarea>
-                    <div class="grid grid-cols-2 gap-2 mb-4">
-                        <button onclick="process('Itaú')" class="bg-orange-600 text-white p-2 rounded-lg text-xs font-bold">Itaú</button>
-                        <button onclick="process('Nubank')" class="bg-purple-700 text-white p-2 rounded-lg text-xs font-bold">Nubank</button>
-                        <button onclick="process('BTG')" class="bg-blue-900 text-white p-2 rounded-lg text-xs font-bold">BTG</button>
-                        <button onclick="process('Inter')" class="bg-orange-500 text-white p-2 rounded-lg text-xs font-bold">Inter</button>
+                <div class="bg-white p-6 rounded-3xl border shadow-lg border-slate-100">
+                    <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <span class="material-icons text-blue-600">psychology</span>
+                        Importador Inteligente
+                    </h2>
+                    <textarea id="raw-input" placeholder="Cole o texto do extrato ou fatura aqui..." class="w-full h-40 p-4 border rounded-2xl text-xs font-mono bg-slate-50 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                    
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Ou importar PDF:</label>
+                        <input type="file" id="pdf-input" accept="application/pdf" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                     </div>
-                    <button onclick="clearData()" class="text-red-500 text-xs underline">Limpar dados deste mês</button>
+
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        <button onclick="process('Itaú')" class="bg-orange-600 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-orange-700 transition">Itaú</button>
+                        <button onclick="process('Nubank')" class="bg-purple-700 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-purple-800 transition">Nubank</button>
+                        <button onclick="process('BTG')" class="bg-blue-900 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-blue-950 transition">BTG</button>
+                        <button onclick="process('Inter')" class="bg-orange-500 text-white p-2 rounded-xl text-xs font-bold shadow-md hover:bg-orange-600 transition">Inter</button>
+                    </div>
+                    <button onclick="clearData()" class="text-red-500 text-xs font-bold w-full text-center underline opacity-70 hover:opacity-100">Limpar dados do período</button>
                 </div>
             </aside>
 
             <main class="lg:col-span-3 space-y-6">
-                <div id="kpi-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                    <!-- KPIs Renderizados -->
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl border shadow-sm">
-                    <h3 class="font-bold text-slate-800 mb-4">Extrato Consolidado Detalhado</h3>
+                <div id="kpi-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4"></div>
+                <div class="bg-white p-6 rounded-3xl border shadow-sm">
+                    <h3 class="font-bold text-slate-900 mb-6 flex items-center gap-2">
+                        <span class="material-icons text-slate-400">list</span>
+                        Extrato Consolidado Detalhado
+                    </h3>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
-                            <thead class="text-xs text-slate-500 uppercase border-b">
-                                <tr><th class="pb-3">Data</th><th class="pb-3">Desc</th><th class="pb-3">Banco</th><th class="pb-3">Valor</th></tr>
+                            <thead class="text-xs text-slate-400 uppercase">
+                                <tr><th class="pb-4">Data</th><th class="pb-4">Descrição</th><th class="pb-4">Banco</th><th class="pb-4 text-right">Valor</th></tr>
                             </thead>
-                            <tbody id="tx-body"></tbody>
+                            <tbody id="tx-body" class="divide-y divide-slate-100"></tbody>
                         </table>
                     </div>
                 </div>
@@ -64,8 +75,8 @@
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('bi_universal_v3')) || {};
-
+        let db = JSON.parse(localStorage.getItem('bi_universal_v4')) || {};
+        
         function getPeriod() { return `${document.getElementById('select-ano').value}-${document.getElementById('select-mes').value}`; }
 
         function render() {
@@ -81,23 +92,22 @@
             });
 
             const kpis = [
-                { id: 'total', title: 'Desembolso Real', val: total, help: "Soma de todas as saídas reais (excluindo transferências). Indica o volume total de dinheiro que saiu da sua vida.", calc: "Σ(Saídas de todas as contas) - Transferências internas", goal: "Indicador base" },
-                { id: 'fixed', title: 'Estrutura Fixa', val: fixed, help: "Despesas obrigatórias de sobrevivência (Aluguel, contas fixas).", calc: "Σ(Moradia + Faturas)", goal: "Manter sob controle" },
-                { id: 'variable', title: 'Consumo Variável', val: variable, help: "Gastos de conveniência, Uber, Lazer. Onde você tem maior poder de manobra.", calc: "Total Desembolso - Estrutura Fixa", goal: "Teto de R$ 1.500" },
-                { id: 'eff', title: 'Eficiência', val: total > 0 ? (100 - (variable/total*100)).toFixed(1) + '%' : '0%', help: "Relação entre o essencial versus o gasto variável.", calc: "100 - (Variável / Total) * 100", goal: "Meta: > 70%" }
+                { id: 'total', title: 'Desembolso Real', val: total, help: "Soma de todas as saídas reais (excluindo transferências entre contas).", calc: "Σ (Todos os débitos - Pix próprios)", comm: "Indica o volume real de capital que saiu do ecossistema." },
+                { id: 'fixed', title: 'Estrutura Fixa', val: fixed, help: "Despesas de manutenção de vida (Aluguel, contas fixas, faturas passadas).", calc: "Σ (Moradia + Faturas + Serviços Fiscais)", comm: "É a linha de base para sua segurança financeira." },
+                { id: 'variable', title: 'Consumo Variável', val: variable, help: "Despesas de conveniência, lazer, apps, mercado e gastos avulsos.", calc: "Desembolso Real - Estrutura Fixa", comm: "Sua margem de manobra. Teto sugerido: R$ 1.500." },
+                { id: 'eff', title: 'Eficiência', val: total > 0 ? (100 - (variable/total*100)).toFixed(1) + '%' : '0%', help: "Relação entre sua estrutura fixa e gastos variáveis.", calc: "100 - (Variável / Total) * 100", comm: "Meta: manter acima de 70%." }
             ];
 
-            const grid = document.getElementById('kpi-grid');
-            grid.innerHTML = kpis.map(k => `
-                <div class="bg-white p-5 rounded-2xl border shadow-sm">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs font-bold text-slate-500">${k.title}</span>
+            document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
+                <div class="bg-white p-6 rounded-3xl border shadow-sm">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">${k.title}</span>
                         <div class="tooltip">
-                            <span class="material-icons text-slate-400 text-sm">help_outline</span>
+                            <span class="material-icons text-blue-500 text-lg cursor-help">help_outline</span>
                             <span class="tooltiptext">
                                 <strong>O que é:</strong> ${k.help}<br><br>
                                 <strong>Cálculo:</strong> ${k.calc}<br><br>
-                                <strong>O que comunica:</strong> ${k.goal}
+                                <strong>Indicação:</strong> ${k.comm}
                             </span>
                         </div>
                     </div>
@@ -106,11 +116,11 @@
             `).join('');
 
             document.getElementById('tx-body').innerHTML = data.txs.map(t => `
-                <tr class="border-b last:border-0 hover:bg-slate-50">
-                    <td class="py-3">${t.d}</td>
-                    <td class="py-3 font-medium">${t.desc}</td>
-                    <td class="py-3 text-slate-500">${t.bank}</td>
-                    <td class="py-3 font-bold">R$ ${t.val.toFixed(2)}</td>
+                <tr>
+                    <td class="py-4 text-slate-500">${t.d}</td>
+                    <td class="py-4 font-bold text-slate-800">${t.desc}</td>
+                    <td class="py-4 text-xs font-semibold text-slate-400">${t.bank}</td>
+                    <td class="py-4 text-right font-black text-slate-900">R$ ${t.val.toFixed(2)}</td>
                 </tr>
             `).join('');
         }
@@ -119,39 +129,52 @@
             const raw = document.getElementById('raw-input').value;
             const period = getPeriod();
             if(!db[period]) db[period] = { txs: [] };
-            
             const lines = raw.split('\n');
             lines.forEach(line => {
                 const valMatch = line.match(/R\$\s?([\d.,]+)/) || line.match(/(-?\d+[\d.,]*)/);
                 if(valMatch) {
                     const val = parseFloat(valMatch[0].replace('R$', '').replace('.', '').replace(',', '.'));
                     if(!isNaN(val) && val > 0) {
-                        let cat = "Variável";
-                        if(line.includes("Aluguel") || line.includes("Sanepar") || line.includes("Vivo") || line.includes("Alves")) cat = "Moradia";
-                        if(line.includes("Fatura") || line.includes("Nubank")) cat = "Faturas";
-                        db[period].txs.push({ d: new Date().toLocaleDateString(), desc: line.substring(0, 20), val: val, bank: bank, cat: cat });
+                        let cat = "Consumo Variável";
+                        if(line.match(/Aluguel|Sanepar|Vivo|Alves|Condominio|Copel/i)) cat = "Moradia";
+                        if(line.match(/Fatura|Nubank|Uniclass/i)) cat = "Faturas";
+                        db[period].txs.push({ d: new Date().toLocaleDateString(), desc: line.substring(0, 30), val: val, bank: bank, cat: cat });
                     }
                 }
             });
-            localStorage.setItem('bi_universal_v3', JSON.stringify(db));
+            localStorage.setItem('bi_universal_v4', JSON.stringify(db));
             render();
-            alert('Dados processados com sucesso!');
         }
+
+        // PDF Handling
+        document.getElementById('pdf-input').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = async function() {
+                const typedarray = new Uint8Array(this.result);
+                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                let fullText = "";
+                for(let i=1; i<=pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const text = await page.getTextContent();
+                    fullText += text.items.map(item => item.str).join(" ");
+                }
+                document.getElementById('raw-input').value = fullText;
+            };
+            reader.readAsArrayBuffer(file);
+        });
 
         function setup() {
             const m = document.getElementById('select-mes');
             const a = document.getElementById('select-ano');
-            const now = new Date();
-            ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'].forEach((n,i)=>{
-                m.add(new Option(n, (i+1).toString().padStart(2,'0')));
-            });
+            const months = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            months.forEach((n,i)=>{ m.add(new Option(n, (i+1).toString().padStart(2,'0'))); });
             for(let i=2025; i<=2030; i++) a.add(new Option(i, i));
-            m.value = (now.getMonth()+1).toString().padStart(2,'0');
-            a.value = now.getFullYear();
+            m.value = "06"; a.value = "2026";
             render();
         }
-
-        function clearData() { if(confirm('Apagar tudo deste mês?')) { db[getPeriod()] = { txs: [] }; localStorage.setItem('bi_universal_v3', JSON.stringify(db)); render(); } }
+        function clearData() { if(confirm('Apagar tudo deste período?')) { db[getPeriod()] = { txs: [] }; localStorage.setItem('bi_universal_v4', JSON.stringify(db)); render(); } }
         setup();
     </script>
 </body>
